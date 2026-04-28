@@ -3,19 +3,24 @@ import java.util.ArrayList;
 public class GameBoard implements Moves{
     private int[][] board= new int[4][4];
 
-    private int[] cords= new int[2];
+    private int[] cords= new int[]{3,3};
 
     public GameBoard(){
-        List<Integer> valuesList= valuesList();
-        for (int i = 0; i < 16; i++) {
-            int rng= (int)(Math.random()*(16-i));
-            if (valuesList.get(rng)==0) {           //salva coordinate dello spazio libero
-                cords[0] = i / 4;
-                cords[1] = i % 4;
-            }
-            board[i/4][i%4]= valuesList.get(rng);
-            valuesList.remove(rng);
+        final int SCRAMBLE= (int)(Math.random()*50)+20;
+        board[3][3]=0;
+        for (int i = 0; i < 15; i++) {
+            board[i/4][i%4]=i+1;
         }
+        board= scrambleBoard(SCRAMBLE);
+    }
+
+    private int[][] scrambleBoard(int scramble) {
+        while (scramble>0){
+            scramble-=1;
+            move((int)(Math.random()*4)+1);
+            printBoard();
+        }
+        return board;
     }
 
 
@@ -23,11 +28,11 @@ public class GameBoard implements Moves{
         if (m==1)
             return moveUP();
         else if (m==2)
-            return moveUP();
+            return moveRIGHT();
         else if (m==3)
-            return moveUP();
+            return moveDOWN();
         else if (m==4)
-            return moveUP();
+            return moveLEFT();
         return null;
     }
     public int[] moveUP(){
@@ -74,14 +79,6 @@ public class GameBoard implements Moves{
         cords[1]=j+1;
         return cords;
     }
-    private static List<Integer> valuesList(){              //crea lista di numeri da 0 a 15 da cui pescare dopo
-        List<Integer> x = new ArrayList<>(16);
-        for(int i=0; i<16; i+=1){
-            x.addLast(i);
-        }
-        return x;
-    }
-
 
     public void printCords(){
         System.out.print("X: "+ cords[0]);
