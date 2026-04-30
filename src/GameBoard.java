@@ -1,6 +1,4 @@
-import java.util.List;
-import java.util.ArrayList;
-public class GameBoard implements Moves{
+public class GameBoard implements Moves, UsefulFuncs<int[][]>{
     private int[][] board= new int[4][4];
 
     private int[] cords= new int[]{3,3};
@@ -110,5 +108,9 @@ public class GameBoard implements Moves{
                 return false;
         }
         return true;
+    }
+
+    public int[][] get(){
+        return board;
     }
 }
