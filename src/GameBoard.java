@@ -6,7 +6,7 @@ public class GameBoard implements Moves{
     private int[] cords= new int[]{3,3};
 
     public GameBoard(){
-        final int SCRAMBLE= (int)(Math.random()*20)+70;
+        final int SCRAMBLE= (int)(Math.random()*20)+200;
         board[3][3]=0;
         for (int i = 0; i < 15; i++) {
             board[i/4][i%4]=i+1;
