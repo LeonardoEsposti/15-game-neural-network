@@ -30,17 +30,16 @@ public class GameBoard implements Moves{
     }
 
 
-    public int[] move(int m){
-        if (m==1)
-            return moveUP();
-        else if (m==2)
-            return moveRIGHT();
-        else if (m==3)
-            return moveDOWN();
-        else if (m==4)
-            return moveLEFT();
-        return null;
+    public int[] move(int m) {
+        return switch (m) {
+            case 1 -> moveUP();
+            case 2 -> moveRIGHT();
+            case 3 -> moveDOWN();
+            case 4 -> moveLEFT();
+            default -> null;
+        };
     }
+
     public int[] moveUP(){
         if (cords[0]==0)
             return cords;
