@@ -6,7 +6,7 @@ public class GameBoard implements Moves{
     private int[] cords= new int[]{3,3};
 
     public GameBoard(){
-        final int SCRAMBLE= (int)(Math.random()*20)+900;
+        final int SCRAMBLE= (int)(Math.random()*20)+70;
         board[3][3]=0;
         for (int i = 0; i < 15; i++) {
             board[i/4][i%4]=i+1;
@@ -15,9 +15,15 @@ public class GameBoard implements Moves{
     }
 
     private int[][] scrambleBoard(int scramble) {
+        int dontMove=0;
         while (scramble>0){
             scramble-=1;
-            move((int)(Math.random()*4)+1);
+            int newMove;
+            do {
+                newMove=(int)(Math.random()*4)+1;
+            }while (newMove==dontMove); //keep looping until you get a valid move
+            move(newMove);
+            dontMove= (newMove+1)%4+1;   //mossa da NON fare (opposto di newMove)
             printBoard();
         }
         return board;
