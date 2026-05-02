@@ -1,3 +1,7 @@
+package neuralNetwork;
+
+import game.GameBoard;
+
 public class NeuronTest extends Thread{
     //test a caso niari
 
