@@ -1,3 +1,5 @@
+package game;
+
 public interface Moves {
     public int[] move(int m);
     public int[] moveUP();

@@ -1,4 +1,7 @@
-public class GameBoard implements Moves, UsefulFuncs<int[][]>{
+package game;
+import functions.UsefulFuncs;
+
+public class GameBoard implements Moves, UsefulFuncs<int[][]> {
     private int[][] board= new int[4][4];
 
     private int[] cords= new int[]{3,3};
