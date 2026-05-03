@@ -1,5 +1,5 @@
 package game;
-import functions.UsefulFuncs;
+import utils.UsefulFuncs;
 
 public class GameBoard implements Moves, UsefulFuncs<int[][]> {
     private int[][] board= new int[4][4];
