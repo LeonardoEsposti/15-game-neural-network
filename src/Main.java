@@ -1,5 +1,4 @@
 import game.GameBoard;
-import neuralNetwork.NeuronTest;
 
 public class Main {
     public static void main(String[] args) {

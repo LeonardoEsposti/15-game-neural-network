@@ -1,19 +1,17 @@
 package neuralNetwork;
-import utils.Activations;
 
-import org.ejml.data.DMatrixRMaj;
-import org.ejml.dense.row.CommonOps_DDRM;
+public class OutputLayer extends Layer {
 
-public class OutputLayer  extends Layer  {
-
-    public void softmax(){
-        for (int i = 0; i < this.PreAct.getNumElements() ; i++ ){
-            AftAct.set(i, softmaxSingle(this.PreAct.get(i), this.PreAct));
-        }
+    public OutputLayer(double[] neurons, double[][] weights, double[] biases) {
+        super(neurons, weights, biases);
     }
 
-    public void ForwardPass() {
-        ForwardPassGeneric();
+    public void softmax() {
+        // computes the sum and runs softmaxSingle for each neuron
+    }
+
+    public void forwardPass() {
+        computeValues();
         softmax();
     }
 }
