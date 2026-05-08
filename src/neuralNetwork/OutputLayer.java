@@ -1,18 +1,16 @@
 package neuralNetwork;
 
+import utils.Matrix;
+
 public class OutputLayer extends Layer {
 
-    public OutputLayer(double[] neurons, double[][] weights, double[] biases) {
-        super(neurons, weights, biases);
+    public OutputLayer(int inputSize, int outputSize) {
+        super(inputSize, outputSize);
     }
 
-    public void softmax() {
-        // computes the sum and runs softmaxSingle for each neuron
-    }
-
-    public void forwardPass() {
-        computeValues();
-        softmax();
+    public Matrix forwardPass(Matrix input) {
+        computeValues(input);
+        return softmax(input);
     }
 }
 

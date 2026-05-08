@@ -1,12 +1,15 @@
 package neuralNetwork;
 
+import utils.Matrix;
+
 public class HiddenLayer extends Layer {
 
-    public HiddenLayer(double[] neurons, double[][] weights, double[] biases) {
-        super(neurons, weights, biases);
+    public HiddenLayer(int inputSize, int outputSize) {
+        super(inputSize, outputSize);
     }
 
-    public void forwardPass() {
-        computeValues();
+    public Matrix forwardPass(Matrix input) {
+        computeValues(input);
+        return relu(input);
     }
 }

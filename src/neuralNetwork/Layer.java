@@ -1,23 +1,24 @@
 package neuralNetwork;
 
 import utils.Activations;
+import utils.Matrix;
 
 public abstract class Layer implements Activations {
 
-    double[] neurons;
-    double[][] weights;
-    double[] biases;
+    protected Matrix neurons;
+    protected Matrix weights;
+    protected Matrix biases;
 
-    public abstract void forwardPass();
+    public abstract Matrix forwardPass(Matrix input);
 
-    public Layer(double[] neurons, double[][] weights, double[] biases) {
-        this.neurons = neurons;
-        this.weights = weights;
-        this.biases = biases;
+    public Layer(int inputSize, int outputSize) {
+        this.neurons = new Matrix(inputSize, 1);
+        this.weights = new Matrix(outputSize, inputSize);
+        this.biases = new Matrix(outputSize, 1);
     }
 
-    public void computeValues() {
-        // z = w * n + b
+    protected void computeValues(Matrix input) {
+        this.neurons = input.dotProduct(this.weights).add(this.biases);
     }
 }
 
