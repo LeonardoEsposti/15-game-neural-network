@@ -12,5 +12,10 @@ public class OutputLayer extends Layer {
         computeValues(input);
         return softmax(input);
     }
+
+    static void main() {
+        OutputLayer ol = new OutputLayer(6, 4);
+        // TODO: testare se softmax funziona correttamente
+    }
 }
 

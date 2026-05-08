@@ -12,4 +12,9 @@ public class HiddenLayer extends Layer {
         computeValues(input);
         return relu(input);
     }
+
+    static void main() {
+        HiddenLayer hl = new HiddenLayer(3, 1);
+        // TODO: testare se relu funziona correttamente
+    }
 }
