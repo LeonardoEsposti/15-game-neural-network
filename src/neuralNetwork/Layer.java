@@ -11,10 +11,16 @@ public abstract class Layer implements Activations {
 
     public abstract Matrix forwardPass(Matrix input);
 
+    private void init() {
+        // TODO: inizializzare pesi (he initialization?)
+        this.biases.fill(0);
+    }
+
     public Layer(int inputSize, int outputSize) {
         this.neurons = new Matrix(inputSize, 1);
         this.weights = new Matrix(outputSize, inputSize);
         this.biases = new Matrix(outputSize, 1);
+        this.init();
     }
 
     protected void computeValues(Matrix input) {

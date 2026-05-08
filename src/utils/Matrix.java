@@ -28,8 +28,16 @@ public class Matrix {
         return this.entries[row][col];
     }
 
-    public void setEntry(int row, int col, double newValue) {
-        this.entries[row][col] = newValue;
+    public void setEntry(int row, int col, double value) {
+        this.entries[row][col] = value;
+    }
+
+    public void fill(double value) {
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                this.entries[i][j] = value;
+            }
+        }
     }
 
     public Matrix add(Matrix m) throws IllegalArgumentException {
@@ -47,7 +55,7 @@ public class Matrix {
 
     public Matrix dotProduct(Matrix m) throws IllegalArgumentException {
         if (this.cols != m.rows)
-            throw new IllegalArgumentException("Cannot multiply matrices of non-suitable dimensions!");
+            throw new IllegalArgumentException("Cannot multiply matrices of non-compatible dimensions!");
 
         Matrix res = new Matrix(this.rows, m.cols);
         for (int i = 0; i < res.rows; i++) {
@@ -71,7 +79,7 @@ public class Matrix {
         }
     }
 
-    public static void main() {
+    static void main() {
         double[][] a = {{1, 2}, {3, 4}, {5, 6}};
         Matrix m1 = new Matrix(a); // 3 x 2
 
