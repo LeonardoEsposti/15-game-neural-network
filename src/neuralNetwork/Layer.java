@@ -12,7 +12,7 @@ public abstract class Layer implements Activations {
     public abstract Matrix forwardPass(Matrix input);
 
     private void init() {
-        // TODO: inizializzare pesi (he initialization?)
+        // TODO: inizializzare pesi
         this.biases.fill(0);
     }
 
@@ -24,7 +24,7 @@ public abstract class Layer implements Activations {
     }
 
     protected void computeValues(Matrix input) {
-        this.neurons = input.dotProduct(this.weights).add(this.biases);
+        this.neurons = input.multiply(this.weights).add(this.biases);
     }
 }
 
