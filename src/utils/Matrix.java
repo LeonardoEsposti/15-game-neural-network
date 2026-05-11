@@ -53,7 +53,7 @@ public class Matrix {
         return res;
     }
 
-    public Matrix dotProduct(Matrix m) throws IllegalArgumentException {
+    public Matrix multiply(Matrix m) throws IllegalArgumentException {
         if (this.cols != m.rows)
             throw new IllegalArgumentException("Cannot multiply matrices of non-compatible dimensions!");
 
@@ -98,7 +98,7 @@ public class Matrix {
         Matrix m3 = new Matrix(c); // 2 x 3
 
         try {
-            m3.dotProduct(m1).printMatrix();
+            m3.multiply(m1).printMatrix();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
