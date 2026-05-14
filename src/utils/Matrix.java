@@ -1,6 +1,7 @@
 package utils;
 
 public class Matrix {
+
     private final int rows, cols;
     private final double[][] entries;
 
@@ -80,27 +81,55 @@ public class Matrix {
     }
 
     static void main() {
+
         double[][] a = {{1, 2}, {3, 4}, {5, 6}};
         Matrix m1 = new Matrix(a); // 3 x 2
 
         double[][] b = {{5, 6}, {7, 8}, {9, 10}};
         Matrix m2 = new Matrix(b); // 3 x 2
 
+        double[][] c = {{1, 2, 3}, {4, 5, 6}};
+        Matrix m3 = new Matrix(c); // 2 x 3
+
+        double[][] d = {{1}, {2}, {3}};
+        Matrix m4 = new Matrix(d); // 3 x 1
+
+        // TEST: matrix addition
         try {
             m1.add(m2).printMatrix();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
 
         System.out.println();
 
-        double[][] c = {{1, 2, 3}, {4, 5, 6}};
-        Matrix m3 = new Matrix(c); // 2 x 3
-
+        // TEST: matrix multiplication
         try {
             m3.multiply(m1).printMatrix();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
+
+        System.out.println();
+
+        // TEST: matrix-vector multiplication
+        try {
+            m3.multiply(m4).printMatrix();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println();
+
+        // TEST: other methods
+        Matrix m5 = new Matrix(3, 3);
+        m5.fill(3);
+        m5.printMatrix();
+        System.out.println();
+        System.out.println(m5.getNumRows());
+        System.out.println(m5.getNumCols());
+        System.out.println();
+        m5.setEntry(2, 1, 3.14);
+        System.out.println(m5.getEntry(2, 1));
     }
 }
