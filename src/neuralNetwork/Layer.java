@@ -5,9 +5,9 @@ import utils.Matrix;
 
 public abstract class Layer implements Activations {
 
-    protected Matrix neurons;
-    protected Matrix weights;
-    protected Matrix biases;
+    protected Matrix neurons;  // vector n rows
+    protected Matrix weights;  // matrix n rows, k col
+    protected Matrix biases;   // vector k rows
 
     public abstract Matrix forwardPass(Matrix input);
 

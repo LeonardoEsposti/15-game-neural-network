@@ -116,4 +116,11 @@ public class GameBoard implements Moves, UsefulFuncs<int[][]> {
     public int[][] get() {
         return board;
     }
+
+    public int nextBestMove(){
+        return 0;
+    }
+
+
+
 }
