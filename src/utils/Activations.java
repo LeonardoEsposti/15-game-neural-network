@@ -1,5 +1,7 @@
 package utils;
 
+import dataStructures.Matrix;
+
 public interface Activations {
 
     default Matrix relu(Matrix values) {

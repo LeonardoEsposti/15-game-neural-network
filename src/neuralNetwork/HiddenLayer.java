@@ -1,6 +1,6 @@
 package neuralNetwork;
 
-import utils.Matrix;
+import dataStructures.Matrix;
 
 public class HiddenLayer extends Layer {
 

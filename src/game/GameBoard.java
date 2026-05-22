@@ -1,21 +1,28 @@
 package game;
 import utils.UsefulFuncs;
+import exceptions.outOfBoundsException;
 
-public class GameBoard implements Moves, UsefulFuncs<int[][]> {
-    private int[][] board = new int[4][4];
+public class GameBoard implements Moves, UsefulFuncs<int[]> {
+    private int[] board = new int[16];
 
-    private int[] cords = new int[]{3,3};
+    private int cords = 15;
 
     public GameBoard() {
-        final int SCRAMBLE = (int)(Math.random() * 20) + 201;
-        board[3][3] = 0;
-        for (int i = 0; i < 15; i++) {
-            board[i/4][i%4] = i + 1;
+        board[15] = 0;
+        for (int i = 1; i < 16; i++) {
+            board[i-1] = i;
         }
-        board = scrambleBoard(SCRAMBLE);
+        board[15] = 0;
+    }
+    public GameBoard(int scramble) {
+        for (int i = 1; i < 16; i++) {
+            board[i-1] = i;
+        }
+        board[15] = 0;
+        board = scrambleBoard(scramble);
     }
 
-    private int[][] scrambleBoard(int scramble) {
+    private int[] scrambleBoard(int scramble) {
         int dontMove = 0;
         while (scramble > 0){
             scramble -= 1;
@@ -31,7 +38,7 @@ public class GameBoard implements Moves, UsefulFuncs<int[][]> {
     }
 
 
-    public int[] move(int m) {
+    public int[]  move(int m) throws outOfBoundsException {
         return switch (m) {
             case 1 -> moveUP();
             case 2 -> moveRIGHT();
@@ -41,79 +48,76 @@ public class GameBoard implements Moves, UsefulFuncs<int[][]> {
         };
     }
 
-    public int[] moveUP() {
-        if (cords[0] == 0)
-            return cords;
-        int i = cords[0];
-        int j = cords[1];
-        int temp = board[i][j];
-        board[i][j] = board[i-1][j];
-        board[i-1][j] = temp;
-        cords[0] = i - 1;
-        return cords;
+    public int[] moveUP() throws outOfBoundsException{
+        if (cords < 4){
+            throw new outOfBoundsException();
+        }
+        int temp = board[cords-4];
+        board[cords-4] = board[cords];
+        board[cords]= temp;
+        cords = cords-4;
+        return board;
+
     }
-    public int[] moveDOWN() {
-        if (cords[0] == 3)
-            return cords;
-        int i = cords[0];
-        int j = cords[1];
-        int temp = board[i][j];
-        board[i][j] = board[i+1][j];
-        board[i+1][j] = temp;
-        cords[0] = i + 1;
-        return cords;
+    public int[] moveDOWN() throws outOfBoundsException{
+        if (cords > 12){
+            throw new outOfBoundsException();
+        }
+        int temp = board[cords+4];
+        board[cords + 4] = board[cords];
+        board[cords]= temp;
+        cords = cords +4;
+        return board;
+
     }
-    public int[] moveLEFT() {
-        if (cords[1] == 0)
-            return cords;
-        int i = cords[0];
-        int j = cords[1];
-        int temp = board[i][j];
-        board[i][j] = board[i][j-1];
-        board[i][j-1] = temp;
-        cords[1] = j - 1;
-        return cords;
+    public int[] moveLEFT() throws outOfBoundsException {
+        if (cords %4 == 0){
+            throw new outOfBoundsException();
+        }
+        int temp = board[cords-1];
+        board[cords - 1] = board[cords];
+        board[cords]= temp;
+        cords = cords -1;
+        return board;
+
     }
-    public int[] moveRIGHT() {
-        if (cords[1] == 3)
-            return cords;
-        int i = cords[0];
-        int j = cords[1];
-        int temp = board[i][j];
-        board[i][j] = board[i][j+1];
-        board[i][j+1] = temp;
-        cords[1] = j + 1;
-        return cords;
+    public int[] moveRIGHT() throws outOfBoundsException {
+        if (cords %4 == 3){
+            throw new outOfBoundsException();
+        }
+        int temp = board[cords+1];
+        board[cords + 1] = board[cords];
+        board[cords]= temp;
+        cords = cords + 1;
+        return board;
     }
 
     public void printCords() {
-        System.out.print("X: " + cords[0]);
-        System.out.println(" Y: " + cords[1]);
+        System.out.print(cords);
+        ;
     }
     public void printBoard() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                System.out.print(board[i][j] + " ");
-                if (board[i][j] < 10)
-                    System.out.print(" ");
-                if (j != 3)
-                    System.out.print("| ");
+        for (int j = 0; j < 4; j++){
+            for (int i = 0; i < 4; i++) {
+                System.out.print(board[i + 4*j]);
+                System.out.print("| ");
             }
-            System.out.println();
+                System.out.println();
         }
+
         printCords();
         System.out.println();
     }
 
     public boolean isComplete(){
         for (int i = 0; i < 15; i++) {
-            if (board[i/4][i%4] != (i + 1))
-                return false;
+            if (board[i] != i+1){
+                return false;}
         }
         return true;
     }
 
-    public int[][] get() {
+    public int[] get() {
         return board;
     }
 
