@@ -1,6 +1,7 @@
 package game;
 import utils.UsefulFuncs;
 import exceptions.outOfBoundsException;
+import java.util.Arrays;
 
 public class GameBoard implements Moves, UsefulFuncs<int[]> {
     private int[] board = new int[16];
@@ -22,17 +23,21 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
         board = scrambleBoard(scramble);
     }
 
-    private int[] scrambleBoard(int scramble) {
+    public int[] scrambleBoard(int scramble) {
         int dontMove = 0;
         while (scramble > 0){
             scramble -= 1;
             int newMove;
+            try{
             do {
                 newMove = (int)(Math.random() * 4) + 1;
             } while (newMove == dontMove); // keep looping until you get a valid move
             move(newMove);
             dontMove = (newMove + 1) % 4 + 1;   //mossa da NON fare (opposto di newMove)
             printBoard();
+            } catch (outOfBoundsException e){
+                scramble++;
+            }
         }
         return board;
     }
@@ -60,7 +65,7 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
 
     }
     public int[] moveDOWN() throws outOfBoundsException{
-        if (cords > 12){
+        if (cords > 11){
             throw new outOfBoundsException();
         }
         int temp = board[cords+4];
@@ -125,6 +130,25 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
         return 0;
     }
 
+    public boolean equals(Object obj){ //here we use object because we need to override method equals for the hash map to work
+        GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling to the compiler that the obj is actually a gameboard
+
+        if(compare == this){
+            return true;
+        }
+        else{
+            for (int i=0; i<16; i++){
+                if (board[i] != compare.board[i])
+                    return false;
+
+            }
+         return true;
+
+        }
+    }
+    public int hashCode() {
+        return Arrays.hashCode(this.board);
+    }
 
 
 }
