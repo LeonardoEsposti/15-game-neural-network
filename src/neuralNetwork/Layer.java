@@ -1,7 +1,7 @@
 package neuralNetwork;
 
 import utils.Activations;
-import utils.Matrix;
+import dataStructures.Matrix;
 import java.util.Random;
 
 public abstract class Layer implements Activations {

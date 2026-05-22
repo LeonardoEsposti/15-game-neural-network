@@ -1,4 +1,7 @@
-package game;
+package dataStructures;
+
+import exceptions.EmptyQueueException;
+import game.GameBoard;
 
 public class queue {
 
