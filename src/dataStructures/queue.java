@@ -5,13 +5,13 @@ import game.GameBoard;
 
 public class queue {
 
-    private class node {
-        GameBoard value;
-        node next;
+    public class node {
+        public  GameBoard value;
+        public node next;
     }
 
-    node first = null;
-    node last = null;
+    public node first = null;
+    public node last = null;
 
     public void add(GameBoard to_add) {
         node NewNode = new node();
