@@ -1,6 +1,8 @@
 package game;
 import utils.UsefulFuncs;
 import exceptions.outOfBoundsException;
+import dataStructures.queue;
+
 import java.util.Arrays;
 
 public class GameBoard implements Moves, UsefulFuncs<int[]> {
@@ -52,6 +54,7 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
             default -> null;
         };
     }
+
 
     public int[] moveUP() throws outOfBoundsException{
         if (cords < 4){
@@ -131,6 +134,9 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
     }
 
     public boolean equals(Object obj){ //here we use object because we need to override method equals for the hash map to work
+
+        if (obj == null || this.getClass() != obj.getClass())
+        {return false;}
         GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling to the compiler that the obj is actually a gameboard
 
         if(compare == this){
@@ -151,4 +157,46 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
     }
 
 
+
+    public int[] legalMoves(){
+        int[] legal = new int[4]; // it's already filled with zeros
+        if (cords >= 4){
+            legal[0] = 1;
+        }
+        if (cords % 4 != 3){
+            legal[1] = 2;
+        }
+        if (cords < 12){
+            legal[2] = 3;
+        }
+        if (cords % 4 != 0){
+            legal[3] = 4;
+        }
+        return legal;
+    }
+    public GameBoard copy(){
+        GameBoard copy = new GameBoard();
+        for (int i = 0 ; i < 16; i++){
+            copy.board[i] = board[i];
+        }
+        copy.cords = this.cords;
+        return copy;
+
+    }
+    public queue Children(){
+        queue children = new queue();
+        for(int move: this.legalMoves()){
+            if(move != 0){
+                GameBoard child = this.copy();
+                child.move(move);
+                children.add(child);
+            }
+        }
+        return children;
+    }
+
 }
+
+
+
+
