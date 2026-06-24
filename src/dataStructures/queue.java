@@ -38,6 +38,12 @@ public class queue {
             return returnValue;
         }
     }
+    public boolean isEmpty() {
+        if (first == null && last == null) {
+            return true;
+        }
+        return false;
+    }
 
 }
 

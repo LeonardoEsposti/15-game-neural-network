@@ -5,48 +5,35 @@ import exceptions.EmptyQueueException;
 import java.util.HashMap;
 
 public class reverseScramble {
-    HashMap<GameBoard, Integer> distanze = new HashMap<>();
-    queue coda = new queue();
 
-    public HashMap calculate(int ceiling, GameBoard father) {
-        coda.add(father);
-        GameBoard tempFather = new GameBoard();
-        queue temporary = new queue();
-        int distance = -1;
+    public static HashMap<GameBoard, Integer> calculate(int ceiling)  {
+        HashMap<GameBoard, Integer> distances = new HashMap<>();
+        queue main_queue = new queue();
+        queue temporary_queue = new queue();
+        GameBoard solved = new GameBoard();
+        main_queue.add(solved);
+        distances.put(solved, 0);
+        int distance = 0;
         while (distance < ceiling) {
-            distance += 1;
-            while (coda.first != null && coda.last != null) {
-                try {
-                    tempFather = coda.get();
-                    distanze.put(tempFather, distance);
-                    queue children = tempFather.Children();
-
-                    while (children.first != null && children.last != null) {
+            try {
+                while (!main_queue.isEmpty()) {
+                    GameBoard top = main_queue.get();
+                    queue children = top.Children();
+                    while (!children.isEmpty()) {
                         GameBoard child = children.get();
-                        if (!distanze.containsKey(child)) {
-                            temporary.add(child);
+                        if (!distances.containsKey(child)) {
+                            temporary_queue.add(child);
+                            distances.put(child, distance + 1);
                         }
-
-
                     }
-
-
-                } catch (EmptyQueueException e) {
-                    break;
                 }
-                ;
-
-            }
-
+                while (!temporary_queue.isEmpty()) {
+                    main_queue.add(temporary_queue.get());
+                }
+            } catch(EmptyQueueException e ){;}
+            distance ++;
         }
-        try {
-            while (temporary.first != null && temporary.last != null) {
-                coda.add(temporary.get());
-            }
-        } catch (EmptyQueueException e) {
-            ;
-        }
-
-    return distanze;
+        return distances;
     }
+
 }
