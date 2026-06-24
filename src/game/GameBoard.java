@@ -137,7 +137,7 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
 
         if (obj == null || this.getClass() != obj.getClass())
         {return false;}
-        GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling to the compiler that the obj is actually a gameboard
+        GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling the compiler that the obj is actually a gameboard
 
         if(compare == this){
             return true;
