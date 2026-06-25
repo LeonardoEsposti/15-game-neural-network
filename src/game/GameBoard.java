@@ -9,6 +9,9 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
     private int[] board = new int[16];
 
     private int cords = 15;
+    public GameBoard(int[] input){
+        board = input;
+    }
 
     public GameBoard() {
         board[15] = 0;
@@ -290,7 +293,24 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
         return linearConflictsRows() + linearConflictsColumns();
     }
 
+    public int Manhattan() {
+        int counter = 0 ;
+        for (int r = 0 ; r<4 ; r++){
+            for (int c = 0 ; c<4 ; c++){
+                if (board[c +4*r] == 0) {
+                    continue;
+                }
+                int actualRow = (board[c +4*r] - 1 ) / 4;
+                int actualCol = (board[c +4*r] - 1 ) % 4;
+                counter += Math.abs(r - actualRow) + Math.abs(c - actualCol);
+            }
+        }
+        return counter;
+    }
 
+    public int euristic(){
+        return Manhattan() + linearConflicts();
+    }
     }
 
 
