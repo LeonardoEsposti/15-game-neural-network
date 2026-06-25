@@ -196,31 +196,103 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
     }
 
 
-    public boolean is_conflict(int x, int x2, int row){
+    public boolean is_conflict_rows(int x, int x2, int row){
         if (  (board[x + 4*row] != 0 ) && board[x2 + 4*row]!= 0 && (board[x + 4*row] - 1) / 4 == row && (board[x2 + 4*row] - 1) / 4 == row  && board[x +4*row] > board[x2 + 4*row] ){
             return true; }
         return false;
     }
-    public int linearConflicts() {
+    public boolean is_conflict_columns(int y, int y2, int column){
+        if (  (board[column + 4*y] != 0 ) && board[column + 4*y2]!= 0 && (board[column + 4*y] - 1) % 4 == column && (board[column + 4*y2] - 1) % 4 == column  && board[column + 4*y] > board[column + 4*y2] ){
+            return true; }
+        return false;
+    }
+    public int linearConflictsRows() {
         int conflicts = 0;
         for (int y = 0; y<4; y++){
+        boolean[] ignored = new boolean[4];
+        while (true){
             int[] lineConflicts = new int[4];
             for (int x = 0; x<4; x++){
-                int x2 = x+1;
-                while (x2<4){
-                    if (this.is_conflict(x,x2,y)){
+                if (ignored[x]){
+                    continue;
+                }
+                for (int x2 = x+1; x2<4; x2++) {
+                    if (ignored[x2]) {
+                        continue;
+                    }
+                    if (this.is_conflict_rows(x, x2, y)) {
                         lineConflicts[x]++;
                         lineConflicts[x2]++;
                     }
-                    x2++;
 
                 }
 
                 }
+            int max = 0;
+            int maxIndex = -1;
+                for (int t = 0 ; t< lineConflicts.length ; t++){
+                    int current = lineConflicts[t];
+                        if (current > max) {
+                            max = current;
+                            maxIndex = t;
+                        }
+                }
+            if (max == 0) {break;}
+            conflicts += 2;
+            ignored[maxIndex] = true;
+
+
+            }
+            }
+        return conflicts;
+        }
+    public int linearConflictsColumns() {
+        int conflicts = 0;
+        for (int x = 0; x<4; x++){
+            boolean[] ignored = new boolean[4];
+            while (true){
+                int[] lineConflicts = new int[4];
+                for (int y = 0; y<4; y++){
+                    if (ignored[y]){
+                        continue;
+                    }
+                    for (int y2 = y+1; y2<4; y2++) {
+                        if (ignored[y2]) {
+                            continue;
+                        }
+                        if (this.is_conflict_columns(y, y2, x)) {
+                            lineConflicts[y]++;
+                            lineConflicts[y2]++;
+                        }
+
+                    }
+
+                }
+                int max = 0;
+                int maxIndex = -1;
+                for (int t = 0 ; t< lineConflicts.length ; t++){
+                    int current = lineConflicts[t];
+                    if (current > max) {
+                        max = current;
+                        maxIndex = t;
+                    }
+                }
+                if (max == 0) {break;}
+                conflicts += 2;
+                ignored[maxIndex] = true;
+
+
             }
         }
+        return conflicts;
     }
-}
+    public int linearConflicts(){
+        return linearConflictsRows() + linearConflictsColumns();
+    }
+
+
+    }
+
 
 
 
