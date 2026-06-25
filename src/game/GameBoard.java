@@ -195,6 +195,31 @@ public class GameBoard implements Moves, UsefulFuncs<int[]> {
         return children;
     }
 
+
+    public boolean is_conflict(int x, int x2, int row){
+        if (  (board[x + 4*row] != 0 ) && board[x2 + 4*row]!= 0 && (board[x + 4*row] - 1) / 4 == row && (board[x2 + 4*row] - 1) / 4 == row  && board[x +4*row] > board[x2 + 4*row] ){
+            return true; }
+        return false;
+    }
+    public int linearConflicts() {
+        int conflicts = 0;
+        for (int y = 0; y<4; y++){
+            int[] lineConflicts = new int[4];
+            for (int x = 0; x<4; x++){
+                int x2 = x+1;
+                while (x2<4){
+                    if (this.is_conflict(x,x2,y)){
+                        lineConflicts[x]++;
+                        lineConflicts[x2]++;
+                    }
+                    x2++;
+
+                }
+
+                }
+            }
+        }
+    }
 }
 
 
