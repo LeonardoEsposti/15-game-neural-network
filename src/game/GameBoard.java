@@ -1,11 +1,10 @@
 package game;
-import utils.UsefulFuncs;
 import exceptions.outOfBoundsException;
 import dataStructures.queue;
 
 import java.util.Arrays;
 
-public class GameBoard implements Moves, UsefulFuncs<int[]> {
+public class GameBoard implements Moves {
     private int[] board = new int[16];
 
     private int cords = 15;
