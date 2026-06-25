@@ -41,6 +41,16 @@ public class Matrix {
         }
     }
 
+    public Matrix transpose() {
+        Matrix res = new Matrix(this.cols, this.rows);
+        for (int i = 0; i < res.rows; i++) {
+            for (int j = 0; j < res.cols; j++) {
+                res.entries[i][j] = this.entries[j][i];
+            }
+        }
+        return res;
+    }
+
     public Matrix add(Matrix m) throws IllegalArgumentException {
         if (this.rows != m.rows || this.cols != m.cols)
             throw new IllegalArgumentException("Cannot add matrices of different dimensions!");
@@ -49,6 +59,19 @@ public class Matrix {
         for (int i = 0; i < res.rows; i++) {
             for (int j = 0; j < res.cols; j++) {
                 res.entries[i][j] = this.entries[i][j] + m.entries[i][j];
+            }
+        }
+        return res;
+    }
+
+    public Matrix subtract(Matrix m) throws IllegalArgumentException {
+        if (this.rows != m.rows || this.cols != m.cols)
+            throw new IllegalArgumentException("Cannot subtract matrices of different dimensions!");
+
+        Matrix res = new Matrix(this.rows, this.cols);
+        for (int i = 0; i < res.rows; i++) {
+            for (int j = 0; j < res.cols; j++) {
+                res.entries[i][j] = this.entries[i][j] - m.entries[i][j];
             }
         }
         return res;
@@ -93,6 +116,10 @@ public class Matrix {
 
         double[][] d = {{1}, {2}, {3}};
         Matrix m4 = new Matrix(d); // 3 x 1
+
+        // TEST: matrix transpose
+        m1.transpose().printMatrix();
+        System.out.println();
 
         // TEST: matrix addition
         try {
