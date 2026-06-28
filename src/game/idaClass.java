@@ -49,8 +49,12 @@ public class idaClass {
                 bound = t;
                 continue;
             }
-            GameBoard lastBoard = new path.get(23);
-            int distance = data.get();
+            GameBoard lastBoard =  path.getLast();
+            int distance = data.get(lastBoard.toString());
+            for (int i = distance; i<path.size()+distance;i++){
+                //System.out.println(path.get(path.size() - 1 - (i -distance) ) + i);
+            }
+            break;
             }
 
 
