@@ -41,7 +41,6 @@ public class GameBoard implements Moves {
                 } while (newMove == dontMove); // keep looping until you get a valid move
                 move(newMove);
                 dontMove = (newMove + 1) % 4 + 1;   //mossa da NON fare (opposto di newMove)
-                printBoard();
             } catch (outOfBoundsException e) {
                 scramble++;
             }
@@ -163,7 +162,17 @@ public class GameBoard implements Moves {
     public int hashCode() {
         return Arrays.hashCode(this.board);
     }
-
+    public String boardToSave(){
+        String x="";
+        for (int i = 0; i < 16; i++) {
+            x+=board[i]+",";
+        }
+        return x;
+    }
+    @Override //to override the inherited method by using an understandable name
+    public String toString(){
+        return boardToSave();
+    }
 
     public int[] legalMoves() {
         int[] legal = new int[4]; // it's already filled with zeros
