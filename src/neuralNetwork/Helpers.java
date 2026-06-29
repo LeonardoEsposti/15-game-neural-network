@@ -2,7 +2,7 @@ package neuralNetwork;
 
 import dataStructures.Matrix;
 
-public interface Functions {
+public interface Helpers {
 
     default Matrix relu(Matrix values) {
         int rows = values.getNumRows();
@@ -41,5 +41,9 @@ public interface Functions {
             }
         }
         return res;
+    }
+
+    default boolean hasIncorrectDimensions(Matrix m1, Matrix m2) {
+        return m1.getNumRows() != m2.getNumRows() || m1.getNumCols() != m2.getNumCols();
     }
 }
