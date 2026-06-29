@@ -6,18 +6,22 @@ import java.util.ArrayList;
 import dataStructures.queue;
 import exceptions.EmptyQueueException;
 
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 public class idaClass {
-    private HashMap<GameBoard, Integer> data;
+    private HashMap<GameBoard, Integer> data= reverseScramble.calculate(12);
 
+    private static java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
     public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
         int f = g + board.euristic();
         if (f > bound) {
             return f;
         }
         ;
-        String code = board.toString(); // here you take the board in its string format
-        if (data.containsKey(code)) {
+        // sbagliato credo String code = board.toString(); // here you take the board in its string format
+        if (data.containsKey(board)) {
             return -1;
         }
         int min = Integer.MAX_VALUE;
@@ -35,7 +39,7 @@ public class idaClass {
             if (t < min) {
                 min = t;
             }
-            path.remove(path.size() - 1);
+            path.removeLast();
 
         }
         return min;
@@ -54,9 +58,41 @@ public class idaClass {
                 bound = t;
                 continue;
             }
-            int distance = data.get(path.getLast().toString());
-            for (int i = distance; i < path.size() + distance; i++) {
-                //System.out.println(path.get(path.size() - 1 - (i -distance) ) + i);
+            GameBoard current = path.getLast();
+            int distance = data.get(current);
+            while(distance>0){
+                queue children = current.Children();
+                while (!children.isEmpty()) {
+                    GameBoard child = children.get();
+                    if (data.containsKey(child) && data.get(child)== distance-1) {
+                        path.add(child);
+                        current=child;
+                        distance--;
+                        break;
+                    }
+                }
+            }
+
+            //to save on a file                                                                                     true means it adds on the current file
+            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("training_data.csv", true))) {
+                distance = path.size() - 1;
+                for (int i = 0; i < path.size(); i++) {
+                    GameBoard b = path.get(i);
+                    String boardHash = b.toString();
+                    if (!alreadySaved.contains(boardHash)) {
+
+                        int trueDistance = distance - i;
+
+                        writer.write( b.boardToSave() + trueDistance);
+                        writer.newLine();
+
+                        alreadySaved.add(boardHash);
+                    }
+                }
+                System.out.println("Path solved. Unique boards appended to dataset.");
+
+            } catch (java.io.IOException e) {
+                System.out.println("Error while saving the training data.");
             }
             break;
         }
