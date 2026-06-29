@@ -4,10 +4,10 @@ import dataStructures.Matrix;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeuralNetwork {
+public class NeuralNetwork implements Helpers {
 
     private final double learningRate = 0.1;
-    private List<Layer> layers;
+    private final List<Layer> layers;
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
@@ -16,14 +16,19 @@ public class NeuralNetwork {
         this.layers.add(new OutputLayer(64, 1));
     }
 
-    private Matrix forwardProp(Matrix input) {
-        Matrix current = input;
+    private Matrix predict(Matrix input) {
+        Matrix values = input;
         for (Layer layer : this.layers)
-            current = layer.forwardPass(current);
-        return current;
+            values = layer.forwardPass(values);
+        return values;
     }
 
-    public void train() {
-        // TODO
+    public void train(Matrix input, Matrix target) {
+        Matrix prediction = this.predict(input);
+        Matrix error = prediction.subtract(target);
+        for (int i = this.layers.size() - 1; i >= 0; i--) {
+            Layer layer = this.layers.get(i);
+            error = layer.backwardPass(error, this.learningRate);
+        }
     }
 }

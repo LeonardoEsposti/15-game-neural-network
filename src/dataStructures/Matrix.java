@@ -1,6 +1,8 @@
 package dataStructures;
 
-public class Matrix {
+import neuralNetwork.Helpers;
+
+public class Matrix implements Helpers {
 
     private final int rows, cols;
     private final double[][] entries;
@@ -52,7 +54,7 @@ public class Matrix {
     }
 
     public Matrix add(Matrix m) throws IllegalArgumentException {
-        if (this.rows != m.rows || this.cols != m.cols)
+        if (hasIncorrectDimensions(this, m))
             throw new IllegalArgumentException("Cannot add matrices of different dimensions!");
 
         Matrix res = new Matrix(this.rows, this.cols);
@@ -65,13 +67,36 @@ public class Matrix {
     }
 
     public Matrix subtract(Matrix m) throws IllegalArgumentException {
-        if (this.rows != m.rows || this.cols != m.cols)
+        if (hasIncorrectDimensions(this, m))
             throw new IllegalArgumentException("Cannot subtract matrices of different dimensions!");
 
         Matrix res = new Matrix(this.rows, this.cols);
         for (int i = 0; i < res.rows; i++) {
             for (int j = 0; j < res.cols; j++) {
                 res.entries[i][j] = this.entries[i][j] - m.entries[i][j];
+            }
+        }
+        return res;
+    }
+
+    public Matrix multiplyByScalar(double a) throws IllegalArgumentException {
+        Matrix res = new Matrix(this.rows, this.cols);
+        for (int i = 0; i < res.rows; i++) {
+            for (int j = 0; j < res.cols; j++) {
+                res.entries[i][j] = this.entries[i][j] * a;
+            }
+        }
+        return res;
+    }
+
+    public Matrix multiplyElementWise(Matrix m) throws IllegalArgumentException {
+        if (hasIncorrectDimensions(this, m))
+            throw new IllegalArgumentException("Cannot multiply (element-wise) matrices of different dimensions!");
+
+        Matrix res = new Matrix(this.rows, this.cols);
+        for (int i = 0; i < res.rows; i++) {
+            for (int j = 0; j < res.cols; j++) {
+                res.entries[i][j] = this.entries[i][j] * m.entries[i][j];
             }
         }
         return res;
