@@ -27,6 +27,7 @@ public class reverseScramble {
                         }
                     }
                 }
+
                 while (!temporary_queue.isEmpty()) {
                     main_queue.add(temporary_queue.get());
                 }
