@@ -13,7 +13,7 @@ public class OutputLayer extends Layer {
     protected Matrix forwardPass(Matrix input) {
         this.input = input;
         this.computeValues();
-        this.output = relu(this.values);
+        this.output = leakyRelu(this.values);
         return this.output;
     }
 }
