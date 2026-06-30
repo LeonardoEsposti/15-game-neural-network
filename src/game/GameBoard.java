@@ -109,7 +109,6 @@ public class GameBoard implements Moves {
 
     public void printCords() {
         System.out.print(cords);
-        ;
     }
 
     public void printBoard() {
@@ -146,17 +145,15 @@ public class GameBoard implements Moves {
         }
         GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling the compiler that the obj is actually a gameboard
 
-        if (compare == this) {
-            return true;
-        } else {
+        if (compare != this) {
             for (int i = 0; i < 16; i++) {
                 if (board[i] != compare.board[i])
                     return false;
 
             }
-            return true;
 
         }
+        return true;
     }
 
     public int hashCode() {
@@ -164,11 +161,11 @@ public class GameBoard implements Moves {
     }
 
     public String boardToSave() {
-        String x = "";
+        StringBuilder x = new StringBuilder();
         for (int i = 0; i < 16; i++) {
-            x += board[i] + ",";
+            x.append(board[i]).append(","); //more efficient by using stringbuilder
         }
-        return x;
+        return x.toString();
     }
 
     @Override //to override the inherited method by using an understandable name
@@ -195,9 +192,7 @@ public class GameBoard implements Moves {
 
     public GameBoard copy() {
         GameBoard copy = new GameBoard();
-        for (int i = 0; i < 16; i++) {
-            copy.board[i] = board[i];
-        }
+        System.arraycopy(board, 0, copy.board, 0, 16); //more efficient
         copy.cords = this.cords;
         return copy;
 
@@ -217,21 +212,16 @@ public class GameBoard implements Moves {
 
 
     public boolean is_conflict_rows(int x, int x2, int row) {
-        if ((board[x + 4 * row] != 0) && board[x2 + 4 * row] != 0
+        return (board[x + 4 * row] != 0) && board[x2 + 4 * row] != 0
                 && (board[x + 4 * row] - 1) / 4 == row && (board[x2 + 4 * row] - 1) / 4 == row //if in the correct row
-                && board[x + 4 * row] > board[x2 + 4 * row]) { //if the left one is bigger
-            return true;
-        }
-        return false;
+                && board[x + 4 * row] > board[x2 + 4 * row];//if the left one is bigger
     }
 
     public boolean is_conflict_columns(int y, int y2, int column) {
-        if ((board[column + 4 * y] != 0) && board[column + 4 * y2] != 0
+
+        return (board[column + 4 * y] != 0) && board[column + 4 * y2] != 0
                 && (board[column + 4 * y] - 1) % 4 == column && (board[column + 4 * y2] - 1) % 4 == column //in the correct column
-                && board[column + 4 * y] > board[column + 4 * y2]) { //if the top one is bigger
-            return true;
-        }
-        return false;
+                && board[column + 4 * y] > board[column + 4 * y2]; //if the top one is bigger
     }
 
     public int linearConflictsRows() {
