@@ -1,6 +1,7 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
+
 import java.util.Random;
 
 public abstract class Layer implements Helpers {
@@ -12,7 +13,7 @@ public abstract class Layer implements Helpers {
 
     protected abstract Matrix forwardPass(Matrix input);
 
-     protected Layer(int inputSize, int outputSize) {
+    protected Layer(int inputSize, int outputSize) {
         this.values = new Matrix(inputSize, 1);
         this.weights = new Matrix(outputSize, inputSize);
         this.biases = new Matrix(outputSize, 1);

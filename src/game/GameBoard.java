@@ -1,6 +1,6 @@
 package game;
 
-import dataStructures.queue;
+import dataStructures.Queue;
 import exceptions.outOfBoundsException;
 
 import java.util.Arrays;
@@ -162,15 +162,17 @@ public class GameBoard implements Moves {
     public int hashCode() {
         return Arrays.hashCode(this.board);
     }
-    public String boardToSave(){
-        String x="";
+
+    public String boardToSave() {
+        String x = "";
         for (int i = 0; i < 16; i++) {
-            x+=board[i]+",";
+            x += board[i] + ",";
         }
         return x;
     }
+
     @Override //to override the inherited method by using an understandable name
-    public String toString(){
+    public String toString() {
         return boardToSave();
     }
 
@@ -201,8 +203,8 @@ public class GameBoard implements Moves {
 
     }
 
-    public queue Children() {
-        queue children = new queue();
+    public Queue Children() {
+        Queue children = new Queue();
         for (int move : this.legalMoves()) {
             if (move != 0) {
                 GameBoard child = this.copy();

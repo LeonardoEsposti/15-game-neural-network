@@ -1,15 +1,16 @@
 package game;
-import dataStructures.queue;
+
+import dataStructures.Queue;
 import exceptions.EmptyQueueException;
 
 import java.util.HashMap;
 
-public class reverseScramble {
+public class ReverseScramble {
 
-    public static HashMap<GameBoard, Integer> calculate(int ceiling)  {
+    public static HashMap<GameBoard, Integer> calculate(int ceiling) {
         HashMap<GameBoard, Integer> distances = new HashMap<>();
-        queue main_queue = new queue();
-        queue temporary_queue = new queue();
+        Queue main_queue = new Queue();
+        Queue temporary_queue = new Queue();
         GameBoard solved = new GameBoard();
         main_queue.add(solved);
         distances.put(solved, 0);
@@ -18,7 +19,7 @@ public class reverseScramble {
             try {
                 while (!main_queue.isEmpty()) {
                     GameBoard top = main_queue.get();
-                    queue children = top.Children();
+                    Queue children = top.Children();
                     while (!children.isEmpty()) {
                         GameBoard child = children.get();
                         if (!distances.containsKey(child)) {
@@ -31,8 +32,10 @@ public class reverseScramble {
                 while (!temporary_queue.isEmpty()) {
                     main_queue.add(temporary_queue.get());
                 }
-            } catch(EmptyQueueException e ){;}
-            distance ++;
+            } catch (EmptyQueueException e) {
+                ;
+            }
+            distance++;
         }
         return distances;
     }
