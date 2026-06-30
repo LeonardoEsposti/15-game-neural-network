@@ -17,7 +17,7 @@ public class NeuralNetwork implements Helpers {
         this.layers.add(new OutputLayer(128, 1));
     }
 
-    private Matrix predict(Matrix input) {
+    public Matrix predict(Matrix input) {
         Matrix values = input;
         for (Layer layer : this.layers)
             values = layer.forwardPass(values);
