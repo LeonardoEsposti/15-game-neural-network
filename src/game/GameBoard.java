@@ -49,18 +49,19 @@ public class GameBoard implements Moves {
     }
 
 
-    public int[] move(int m) throws OutOfBoundsException {
-        return switch (m) {
+    public void move(int m) throws OutOfBoundsException {
+        switch (m) {
             case 1 -> moveUP();
             case 2 -> moveRIGHT();
             case 3 -> moveDOWN();
             case 4 -> moveLEFT();
-            default -> null;
-        };
+            default -> {
+            }
+        }
     }
 
 
-    public int[] moveUP() throws OutOfBoundsException {
+    public void moveUP() throws OutOfBoundsException {
         if (cords < 4) {
             throw new OutOfBoundsException();
         }
@@ -68,11 +69,10 @@ public class GameBoard implements Moves {
         board[cords - 4] = board[cords];
         board[cords] = temp;
         cords = cords - 4;
-        return board;
 
     }
 
-    public int[] moveDOWN() throws OutOfBoundsException {
+    public void moveDOWN() throws OutOfBoundsException {
         if (cords > 11) {
             throw new OutOfBoundsException();
         }
@@ -80,11 +80,10 @@ public class GameBoard implements Moves {
         board[cords + 4] = board[cords];
         board[cords] = temp;
         cords = cords + 4;
-        return board;
 
     }
 
-    public int[] moveLEFT() throws OutOfBoundsException {
+    public void moveLEFT() throws OutOfBoundsException {
         if (cords % 4 == 0) {
             throw new OutOfBoundsException();
         }
@@ -92,11 +91,10 @@ public class GameBoard implements Moves {
         board[cords - 1] = board[cords];
         board[cords] = temp;
         cords = cords - 1;
-        return board;
 
     }
 
-    public int[] moveRIGHT() throws OutOfBoundsException {
+    public void moveRIGHT() throws OutOfBoundsException {
         if (cords % 4 == 3) {
             throw new OutOfBoundsException();
         }
@@ -104,7 +102,6 @@ public class GameBoard implements Moves {
         board[cords + 1] = board[cords];
         board[cords] = temp;
         cords = cords + 1;
-        return board;
     }
 
     public void printCords() {

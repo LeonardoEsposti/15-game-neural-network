@@ -33,7 +33,7 @@ public class ReverseScramble {
                     main_queue.add(temporary_queue.get());
                 }
             } catch (EmptyQueueException e) {
-                ;
+                System.out.println("Empty queue");
             }
             distance++;
         }
