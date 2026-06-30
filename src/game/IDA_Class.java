@@ -7,17 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IDA_Class {
-    private HashMap<GameBoard, Integer> data = ReverseScramble.calculate(12);
+    private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(12);
 
-    private static java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
+    private static final java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
 
     public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
         int f = g + board.euristic();
         if (f > bound) {
             return f;
         }
-        ;
-        // sbagliato credo String code = board.toString(); // here you take the board in its string format
         if (data.containsKey(board)) {
             return -1;
         }
@@ -45,7 +43,7 @@ public class IDA_Class {
     //if it's expected future it's fine, it checks that of its children. if any of them get it solved, it returns -1, otherwise it returns the expectancy of the best child
 
     public void ida(GameBoard board) throws EmptyQueueException {
-        int t = 0;
+        int t;
         int bound = board.euristic();
         while (true) {
             ArrayList<GameBoard> path = new ArrayList<>();
