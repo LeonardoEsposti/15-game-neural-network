@@ -17,10 +17,10 @@ public class ReverseScramble {
         int distance = 0;
         while (distance < ceiling) {
             try {
-                while (!main_queue.isEmpty()) {
+                while (main_queue.isNotEmpty()) {
                     GameBoard top = main_queue.get();
                     Queue children = top.Children();
-                    while (!children.isEmpty()) {
+                    while (children.isNotEmpty()) {
                         GameBoard child = children.get();
                         if (!distances.containsKey(child)) {
                             temporary_queue.add(child);
@@ -29,7 +29,7 @@ public class ReverseScramble {
                     }
                 }
 
-                while (!temporary_queue.isEmpty()) {
+                while (temporary_queue.isNotEmpty()) {
                     main_queue.add(temporary_queue.get());
                 }
             } catch (EmptyQueueException e) {
