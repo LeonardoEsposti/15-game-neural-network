@@ -1,6 +1,7 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
+
 import java.util.ArrayList;
 import java.util.List;
 

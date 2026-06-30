@@ -3,10 +3,10 @@ package dataStructures;
 import exceptions.EmptyQueueException;
 import game.GameBoard;
 
-public class queue {
+public class Queue {
 
     public class node {
-        public  GameBoard value;
+        public GameBoard value;
         public node next;
     }
 
@@ -26,18 +26,18 @@ public class queue {
     }
 
     public GameBoard get() throws EmptyQueueException {
-        if (first == null || last == null){
+        if (first == null || last == null) {
             throw new EmptyQueueException();
-        }
-        else {
+        } else {
             GameBoard returnValue = first.value;
             first = first.next;
-            if (first == null){
+            if (first == null) {
                 last = null;
             }
             return returnValue;
         }
     }
+
     public boolean isEmpty() {
         if (first == null && last == null) {
             return true;

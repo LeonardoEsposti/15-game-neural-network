@@ -1,19 +1,16 @@
 package game;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-
-import dataStructures.queue;
+import dataStructures.Queue;
 import exceptions.EmptyQueueException;
 
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class idaClass {
-    private HashMap<GameBoard, Integer> data= reverseScramble.calculate(12);
+public class IDA_Class {
+    private HashMap<GameBoard, Integer> data = ReverseScramble.calculate(12);
 
     private static java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
+
     public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
         int f = g + board.euristic();
         if (f > bound) {
@@ -25,7 +22,7 @@ public class idaClass {
             return -1;
         }
         int min = Integer.MAX_VALUE;
-        queue children = board.Children();
+        Queue children = board.Children();
         while (!children.isEmpty()) {
             GameBoard child = children.get();
             if (path.contains(child)) {
@@ -60,13 +57,13 @@ public class idaClass {
             }
             GameBoard current = path.getLast();
             int distance = data.get(current);
-            while(distance>0){
-                queue children = current.Children();
+            while (distance > 0) {
+                Queue children = current.Children();
                 while (!children.isEmpty()) {
                     GameBoard child = children.get();
-                    if (data.containsKey(child) && data.get(child)== distance-1) {
+                    if (data.containsKey(child) && data.get(child) == distance - 1) {
                         path.add(child);
-                        current=child;
+                        current = child;
                         distance--;
                         break;
                     }
@@ -83,7 +80,7 @@ public class idaClass {
 
                         int trueDistance = distance - i;
 
-                        writer.write( b.boardToSave() + trueDistance);
+                        writer.write(b.boardToSave() + trueDistance);
                         writer.newLine();
 
                         alreadySaved.add(boardHash);
