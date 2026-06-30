@@ -1,7 +1,7 @@
 package game;
 
 import dataStructures.Queue;
-import exceptions.outOfBoundsException;
+import exceptions.OutOfBoundsException;
 
 import java.util.Arrays;
 
@@ -41,7 +41,7 @@ public class GameBoard implements Moves {
                 } while (newMove == dontMove); // keep looping until you get a valid move
                 move(newMove);
                 dontMove = (newMove + 1) % 4 + 1;   //mossa da NON fare (opposto di newMove)
-            } catch (outOfBoundsException e) {
+            } catch (OutOfBoundsException e) {
                 scramble++;
             }
         }
@@ -49,7 +49,7 @@ public class GameBoard implements Moves {
     }
 
 
-    public int[] move(int m) throws outOfBoundsException {
+    public int[] move(int m) throws OutOfBoundsException {
         return switch (m) {
             case 1 -> moveUP();
             case 2 -> moveRIGHT();
@@ -60,9 +60,9 @@ public class GameBoard implements Moves {
     }
 
 
-    public int[] moveUP() throws outOfBoundsException {
+    public int[] moveUP() throws OutOfBoundsException {
         if (cords < 4) {
-            throw new outOfBoundsException();
+            throw new OutOfBoundsException();
         }
         int temp = board[cords - 4];
         board[cords - 4] = board[cords];
@@ -72,9 +72,9 @@ public class GameBoard implements Moves {
 
     }
 
-    public int[] moveDOWN() throws outOfBoundsException {
+    public int[] moveDOWN() throws OutOfBoundsException {
         if (cords > 11) {
-            throw new outOfBoundsException();
+            throw new OutOfBoundsException();
         }
         int temp = board[cords + 4];
         board[cords + 4] = board[cords];
@@ -84,9 +84,9 @@ public class GameBoard implements Moves {
 
     }
 
-    public int[] moveLEFT() throws outOfBoundsException {
+    public int[] moveLEFT() throws OutOfBoundsException {
         if (cords % 4 == 0) {
-            throw new outOfBoundsException();
+            throw new OutOfBoundsException();
         }
         int temp = board[cords - 1];
         board[cords - 1] = board[cords];
@@ -96,9 +96,9 @@ public class GameBoard implements Moves {
 
     }
 
-    public int[] moveRIGHT() throws outOfBoundsException {
+    public int[] moveRIGHT() throws OutOfBoundsException {
         if (cords % 4 == 3) {
-            throw new outOfBoundsException();
+            throw new OutOfBoundsException();
         }
         int temp = board[cords + 1];
         board[cords + 1] = board[cords];
