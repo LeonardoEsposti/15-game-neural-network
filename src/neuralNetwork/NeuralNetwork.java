@@ -7,7 +7,6 @@ import java.util.List;
 
 public class NeuralNetwork implements Helpers {
 
-    private final double learningRate = 0.0001;
     private final List<Layer> layers;
 
     public NeuralNetwork() {
@@ -26,11 +25,14 @@ public class NeuralNetwork implements Helpers {
     }
 
     public void train(Matrix input, Matrix target) {
+
+        final double learningRate = 0.0001;
+
         Matrix prediction = this.predict(input);
         Matrix error = prediction.subtract(target);
         for (int i = this.layers.size() - 1; i >= 0; i--) {
             Layer layer = this.layers.get(i);
-            error = layer.backwardPass(error, this.learningRate);
+            error = layer.backwardPass(error, learningRate);
         }
     }
 

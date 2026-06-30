@@ -1,13 +1,13 @@
 package game;
 
 public interface Moves {
-    public int[] move(int m);
+    void move(int m);
 
-    public int[] moveUP();
+    void moveUP();
 
-    public int[] moveDOWN();
+    void moveDOWN();
 
-    public int[] moveLEFT();
+    void moveLEFT();
 
-    public int[] moveRIGHT();
+    void moveRIGHT();
 }
