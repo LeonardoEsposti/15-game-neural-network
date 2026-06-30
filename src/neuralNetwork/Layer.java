@@ -35,7 +35,7 @@ public abstract class Layer implements Helpers {
     }
 
     protected Matrix backwardPass(Matrix error, double learningRate) {
-        Matrix gradient = error.multiplyElementWise(reluDerivative(this.values));  // dZ = d(cost) * d(relu(Z))
+        Matrix gradient = error.multiplyElementWise(leakyReluDerivative(this.values));  // dZ = d(cost) * d(relu(Z))
         Matrix prevError = this.weights.transpose().multiply(gradient);  // d(cost)_prev = W^T * dZ
         this.updateParams(gradient, learningRate);
         return prevError;
