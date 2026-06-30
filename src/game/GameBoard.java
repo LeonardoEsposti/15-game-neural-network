@@ -201,7 +201,7 @@ public class GameBoard implements Moves {
             if (move != 0) {
                 GameBoard child = this.copy();
                 child.move(move);
-                children.add(child);
+                children.add(child,move);
             }
         }
         return children;

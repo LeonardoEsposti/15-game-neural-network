@@ -1,11 +1,27 @@
 package dataStructures;
 
+import game.GameBoard;
 import neuralNetwork.Helpers;
 
 public class Matrix implements Helpers {
 
     private final int rows, cols;
     private final double[][] entries;
+    //ONE HOT ENCODING DELLA BOARD
+    public Matrix (int[] boardArray){
+        this.rows = 256;
+        this.cols = 1;
+        this.entries= new double[16][1];
+        for (int i = 0; i < 16; i++) {
+            for  (int j = 0; j < 16; j++) {
+                if (j==boardArray[i])
+                    entries[i*16+j][0] = 1;
+            }
+        }
+    }
+    public Matrix(GameBoard board) {
+        this(board.get());
+    }
 
     public Matrix(int rows, int cols) {
         this.rows = rows;
@@ -126,6 +142,10 @@ public class Matrix implements Helpers {
             }
             System.out.println();
         }
+    }
+
+    public double getFirstEntry(){
+        return this.entries[0][0];
     }
 
     static void main() {

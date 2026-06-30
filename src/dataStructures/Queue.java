@@ -7,6 +7,7 @@ public class Queue {
 
     public static class Node {
         public GameBoard value;
+        public Integer moved;
         public Node next;
     }
 
@@ -16,6 +17,18 @@ public class Queue {
     public void add(GameBoard to_add) {
         Node newNode = new Node();
         newNode.value = to_add;
+        if (first == null || last == null) {
+            first = newNode;
+        } else {
+            last.next = newNode;
+        }
+        last = newNode;
+    }
+
+    public void add(GameBoard to_add, int move) {
+        Node newNode = new Node();
+        newNode.value = to_add;
+        newNode.moved = move;
         if (first == null || last == null) {
             first = newNode;
         } else {
@@ -36,7 +49,9 @@ public class Queue {
             return returnValue;
         }
     }
-
+    public int readMove(){
+        return first.moved;
+    }
     public boolean isNotEmpty() {
         return first != null || last != null;
     }
