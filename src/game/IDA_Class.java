@@ -23,7 +23,7 @@ public class IDA_Class {
         }
         int min = Integer.MAX_VALUE;
         Queue children = board.Children();
-        while (!children.isEmpty()) {
+        while (children.isNotEmpty()) {
             GameBoard child = children.get();
             if (path.contains(child)) {
                 continue;
@@ -59,7 +59,7 @@ public class IDA_Class {
             int distance = data.get(current);
             while (distance > 0) {
                 Queue children = current.Children();
-                while (!children.isEmpty()) {
+                while (children.isNotEmpty()) {
                     GameBoard child = children.get();
                     if (data.containsKey(child) && data.get(child) == distance - 1) {
                         path.add(child);

@@ -5,24 +5,23 @@ import game.GameBoard;
 
 public class Queue {
 
-    public class node {
+    public static class Node {
         public GameBoard value;
-        public node next;
+        public Node next;
     }
 
-    public node first = null;
-    public node last = null;
+    public Node first = null;
+    public Node last = null;
 
     public void add(GameBoard to_add) {
-        node NewNode = new node();
-        NewNode.value = to_add;
+        Node newNode = new Node();
+        newNode.value = to_add;
         if (first == null || last == null) {
-            first = NewNode;
-            last = NewNode;
+            first = newNode;
         } else {
-            last.next = NewNode;
-            last = NewNode;
+            last.next = newNode;
         }
+        last = newNode;
     }
 
     public GameBoard get() throws EmptyQueueException {
@@ -38,11 +37,8 @@ public class Queue {
         }
     }
 
-    public boolean isEmpty() {
-        if (first == null && last == null) {
-            return true;
-        }
-        return false;
+    public boolean isNotEmpty() {
+        return first != null || last != null;
     }
 
 }
