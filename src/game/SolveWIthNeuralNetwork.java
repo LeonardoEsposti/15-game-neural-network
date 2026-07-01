@@ -6,17 +6,22 @@ import exceptions.EmptyQueueException;
 import neuralNetwork.NeuralNetwork;
 
 public class SolveWIthNeuralNetwork {
-    public static void solve(GameBoard board) throws EmptyQueueException {
-        NeuralNetwork neuralNetwork = new NeuralNetwork();
+    private final NeuralNetwork neuralNetwork;
+
+    public SolveWIthNeuralNetwork(NeuralNetwork neuralNetwork) {
+        this.neuralNetwork = neuralNetwork;
+    }
+
+    public void solve(GameBoard board) throws EmptyQueueException {
         Queue children;
         GameBoard parentBoard = board;
-
+        int moveToNotInclude = 0;
         while (!parentBoard.isComplete()) {
             double minPrediction = Double.MAX_VALUE;
             int smallestMove = 0;
             GameBoard smallestBoard = null;
 
-            children = parentBoard.Children();
+            children = parentBoard.Children(moveToNotInclude);
 
             while (children.isNotEmpty()) {
                 int moved = children.readMove();
@@ -29,7 +34,8 @@ public class SolveWIthNeuralNetwork {
                     smallestBoard = child;
                 }
             }
-            System.out.println("Next move is " + getMove(smallestMove));
+            System.out.println("Next move is " + getMove(smallestMove) + " with a prediction of: " + minPrediction);
+            moveToNotInclude = (smallestMove + 1) % 4 + 1;
             smallestBoard.printBoard();
             parentBoard = smallestBoard;
         }
@@ -38,9 +44,9 @@ public class SolveWIthNeuralNetwork {
     public static String getMove(int move) {
         return switch (move) {
             case 1 -> "UP";
-            case 2 -> "LEFT";
+            case 2 -> "RIGHT";
             case 3 -> "DOWN";
-            case 4 -> "RIGHT";
+            case 4 -> "LEFT";
             default -> "ERROR";
         };
     }

@@ -11,7 +11,7 @@ public class Matrix implements Helpers {
     public Matrix(int[] arr) {
         this.rows = 256;
         this.cols = 1;
-        this.entries = new double[16][1];
+        this.entries = new double[256][1];
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 if (j == arr[i])
