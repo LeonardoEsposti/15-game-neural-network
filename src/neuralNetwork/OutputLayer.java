@@ -2,7 +2,7 @@ package neuralNetwork;
 
 import dataStructures.Matrix;
 
-public class OutputLayer extends Layer {
+class OutputLayer extends Layer {
 
     OutputLayer(int inputSize, int outputSize) {
         super(inputSize, outputSize);
@@ -11,7 +11,6 @@ public class OutputLayer extends Layer {
     protected Matrix forwardPass(Matrix input) {
         this.input = input;
         this.computeValues();
-
-        return leakyRelu(this.values);
+        return Helpers.leakyRelu(this.values);
     }
 }

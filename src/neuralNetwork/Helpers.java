@@ -4,7 +4,7 @@ import dataStructures.Matrix;
 
 public interface Helpers {
 
-    default Matrix leakyRelu(Matrix values) {
+    static Matrix leakyRelu(Matrix values) {
         int rows = values.getNumRows();
         int cols = values.getNumCols();
         Matrix res = new Matrix(rows, cols);
@@ -20,7 +20,7 @@ public interface Helpers {
         return res;
     }
 
-    default Matrix leakyReluDerivative(Matrix values) {
+    static Matrix leakyReluDerivative(Matrix values) {
         int rows = values.getNumRows();
         int cols = values.getNumCols();
         Matrix res = new Matrix(rows, cols);
@@ -35,7 +35,7 @@ public interface Helpers {
         return res;
     }
 
-    default Matrix mse(Matrix values, Matrix target) {
+    static Matrix mse(Matrix values, Matrix target) {
         int rows = values.getNumRows();
         int cols = values.getNumCols();
         Matrix res = new Matrix(rows, cols);
@@ -47,7 +47,7 @@ public interface Helpers {
         return res;
     }
 
-    default boolean hasIncorrectDimensions(Matrix m1, Matrix m2) {
+    static boolean hasIncorrectDims(Matrix m1, Matrix m2) {
         return m1.getNumRows() != m2.getNumRows() || m1.getNumCols() != m2.getNumCols();
     }
 }

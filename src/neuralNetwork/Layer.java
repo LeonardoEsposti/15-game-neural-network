@@ -1,10 +1,9 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
-
 import java.util.Random;
 
-public abstract class Layer implements Helpers {
+abstract class Layer implements Helpers {
 
     protected Matrix values;  // n x 1 matrix
     protected Matrix weights;  // k x n matrix
@@ -36,7 +35,7 @@ public abstract class Layer implements Helpers {
     }
 
     protected Matrix backwardPass(Matrix error, double learningRate) {
-        Matrix gradient = error.multiplyElementWise(leakyReluDerivative(this.values));  // dZ = d(cost) * d(relu(Z))
+        Matrix gradient = error.multiplyElementWise(Helpers.leakyReluDerivative(this.values));  // dZ = d(cost) * d(relu(Z))
         Matrix prevError = this.weights.transpose().multiply(gradient);  // d(cost)_prev = W^T * dZ
         this.updateParams(gradient, learningRate);
         return prevError;

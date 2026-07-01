@@ -2,7 +2,7 @@ package neuralNetwork;
 
 import dataStructures.Matrix;
 
-public class HiddenLayer extends Layer {
+class HiddenLayer extends Layer {
 
     HiddenLayer(int inputSize, int outputSize) {
         super(inputSize, outputSize);
@@ -11,6 +11,6 @@ public class HiddenLayer extends Layer {
     protected Matrix forwardPass(Matrix input) {
         this.input = input;
         this.computeValues();
-        return leakyRelu(this.values);
+        return Helpers.leakyRelu(this.values);
     }
 }

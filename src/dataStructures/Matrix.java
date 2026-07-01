@@ -7,20 +7,21 @@ public class Matrix implements Helpers {
 
     private final int rows, cols;
     private final double[][] entries;
-    //ONE HOT ENCODING DELLA BOARD
-    public Matrix (int[] boardArray){
+
+    public Matrix(int[] arr) {
         this.rows = 256;
         this.cols = 1;
-        this.entries= new double[16][1];
+        this.entries = new double[16][1];
         for (int i = 0; i < 16; i++) {
-            for  (int j = 0; j < 16; j++) {
-                if (j==boardArray[i])
-                    entries[i*16+j][0] = 1;
+            for (int j = 0; j < 16; j++) {
+                if (j == arr[i])
+                    this.entries[i*16+j][0] = 1;
             }
         }
     }
+
     public Matrix(GameBoard board) {
-        this(board.get());
+        this(board.getBoard());
     }
 
     public Matrix(int rows, int cols) {
@@ -29,10 +30,11 @@ public class Matrix implements Helpers {
         this.entries = new double[rows][cols];
     }
 
-    public Matrix(double[][] entries) {
-        this.rows = entries.length;
-        this.cols = entries[0].length;
-        this.entries = entries;
+    // used only for testing purposes
+    public Matrix(double[][] matrix) {
+        this.rows = matrix.length;
+        this.cols = matrix[0].length;
+        this.entries = matrix;
     }
 
     public int getNumRows() {
@@ -41,6 +43,10 @@ public class Matrix implements Helpers {
 
     public int getNumCols() {
         return this.cols;
+    }
+
+    public double getFirstEntry() {
+        return this.entries[0][0];
     }
 
     public double getEntry(int row, int col) {
@@ -70,7 +76,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix add(Matrix m) throws IllegalArgumentException {
-        if (hasIncorrectDimensions(this, m))
+        if (Helpers.hasIncorrectDims(this, m))
             throw new IllegalArgumentException("Cannot add matrices of different dimensions!");
 
         Matrix res = new Matrix(this.rows, this.cols);
@@ -83,7 +89,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix subtract(Matrix m) throws IllegalArgumentException {
-        if (hasIncorrectDimensions(this, m))
+        if (Helpers.hasIncorrectDims(this, m))
             throw new IllegalArgumentException("Cannot subtract matrices of different dimensions!");
 
         Matrix res = new Matrix(this.rows, this.cols);
@@ -106,7 +112,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix multiplyElementWise(Matrix m) throws IllegalArgumentException {
-        if (hasIncorrectDimensions(this, m))
+        if (Helpers.hasIncorrectDims(this, m))
             throw new IllegalArgumentException("Cannot multiply (element-wise) matrices of different dimensions!");
 
         Matrix res = new Matrix(this.rows, this.cols);
@@ -142,10 +148,6 @@ public class Matrix implements Helpers {
             }
             System.out.println();
         }
-    }
-
-    public double getFirstEntry(){
-        return this.entries[0][0];
     }
 
     static void main() {

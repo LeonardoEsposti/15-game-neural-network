@@ -2,32 +2,27 @@ package game;
 
 import dataStructures.Queue;
 import exceptions.OutOfBoundsException;
-
 import java.util.Arrays;
 
 public class GameBoard implements Moves {
+
     private int[] board = new int[16];
-
-    private int cords = 15;
-
-    public GameBoard(int[] input) {
-        board = input;
-    }
+    private int coords;
 
     public GameBoard() {
-        board[15] = 0;
-        for (int i = 1; i < 16; i++) {
-            board[i - 1] = i;
-        }
-        board[15] = 0;
+        for (int i = 1; i < 16; i++)
+            this.board[i - 1] = i;
+        this.coords = 15;
+        this.board[this.coords] = 0;
+    }
+
+    public GameBoard(int[] board) {
+        this.board = board;
     }
 
     public GameBoard(int scramble) {
-        for (int i = 1; i < 16; i++) {
-            board[i - 1] = i;
-        }
-        board[15] = 0;
-        board = scrambleBoard(scramble);
+        this();
+        this.board = this.scrambleBoard(scramble);
     }
 
     public int[] scrambleBoard(int scramble) {
@@ -62,50 +57,50 @@ public class GameBoard implements Moves {
 
 
     public void moveUP() throws OutOfBoundsException {
-        if (cords < 4) {
+        if (coords < 4) {
             throw new OutOfBoundsException();
         }
-        int temp = board[cords - 4];
-        board[cords - 4] = board[cords];
-        board[cords] = temp;
-        cords = cords - 4;
+        int temp = board[coords - 4];
+        board[coords - 4] = board[coords];
+        board[coords] = temp;
+        coords = coords - 4;
 
     }
 
     public void moveDOWN() throws OutOfBoundsException {
-        if (cords > 11) {
+        if (coords > 11) {
             throw new OutOfBoundsException();
         }
-        int temp = board[cords + 4];
-        board[cords + 4] = board[cords];
-        board[cords] = temp;
-        cords = cords + 4;
+        int temp = board[coords + 4];
+        board[coords + 4] = board[coords];
+        board[coords] = temp;
+        coords = coords + 4;
 
     }
 
     public void moveLEFT() throws OutOfBoundsException {
-        if (cords % 4 == 0) {
+        if (coords % 4 == 0) {
             throw new OutOfBoundsException();
         }
-        int temp = board[cords - 1];
-        board[cords - 1] = board[cords];
-        board[cords] = temp;
-        cords = cords - 1;
+        int temp = board[coords - 1];
+        board[coords - 1] = board[coords];
+        board[coords] = temp;
+        coords = coords - 1;
 
     }
 
     public void moveRIGHT() throws OutOfBoundsException {
-        if (cords % 4 == 3) {
+        if (coords % 4 == 3) {
             throw new OutOfBoundsException();
         }
-        int temp = board[cords + 1];
-        board[cords + 1] = board[cords];
-        board[cords] = temp;
-        cords = cords + 1;
+        int temp = board[coords + 1];
+        board[coords + 1] = board[coords];
+        board[coords] = temp;
+        coords = coords + 1;
     }
 
-    public void printCords() {
-        System.out.print(cords);
+    public void printCoords() {
+        System.out.print(this.coords);
     }
 
     public void printBoard() {
@@ -117,20 +112,19 @@ public class GameBoard implements Moves {
             System.out.println();
         }
 
-        printCords();
+        printCoords();
         System.out.println();
     }
 
     public boolean isComplete() {
         for (int i = 0; i < 15; i++) {
-            if (board[i] != i + 1) {
+            if (board[i] != i + 1)
                 return false;
-            }
         }
         return true;
     }
 
-    public int[] get() {
+    public int[] getBoard() {
         return board;
     }
 
@@ -172,16 +166,16 @@ public class GameBoard implements Moves {
 
     public int[] legalMoves() {
         int[] legal = new int[4]; // it's already filled with zeros
-        if (cords >= 4) {
+        if (coords >= 4) {
             legal[0] = 1;
         }
-        if (cords % 4 != 3) {
+        if (coords % 4 != 3) {
             legal[1] = 2;
         }
-        if (cords < 12) {
+        if (coords < 12) {
             legal[2] = 3;
         }
-        if (cords % 4 != 0) {
+        if (coords % 4 != 0) {
             legal[3] = 4;
         }
         return legal;
@@ -190,7 +184,7 @@ public class GameBoard implements Moves {
     public GameBoard copy() {
         GameBoard copy = new GameBoard();
         System.arraycopy(board, 0, copy.board, 0, 16); //more efficient
-        copy.cords = this.cords;
+        copy.coords = this.coords;
         return copy;
 
     }
