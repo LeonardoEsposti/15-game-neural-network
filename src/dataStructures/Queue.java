@@ -7,40 +7,38 @@ public class Queue {
 
     public static class Node {
         public GameBoard value;
-        public Integer moved;
+        public Integer move;
         public Node next;
     }
 
     public Node first = null;
     public Node last = null;
 
-    public void add(GameBoard to_add) {
+    public void add(GameBoard board) {
         Node newNode = new Node();
-        newNode.value = to_add;
-        if (first == null || last == null) {
+        newNode.value = board;
+        if (first == null || last == null)
             first = newNode;
-        } else {
+        else
             last.next = newNode;
-        }
         last = newNode;
     }
 
-    public void add(GameBoard to_add, int move) {
+    public void add(GameBoard board, int move) {
         Node newNode = new Node();
-        newNode.value = to_add;
-        newNode.moved = move;
-        if (first == null || last == null) {
+        newNode.value = board;
+        newNode.move = move;
+        if (first == null || last == null)
             first = newNode;
-        } else {
+        else
             last.next = newNode;
-        }
         last = newNode;
     }
 
     public GameBoard get() throws EmptyQueueException {
-        if (first == null || last == null) {
+        if (first == null || last == null)
             throw new EmptyQueueException();
-        } else {
+        else {
             GameBoard returnValue = first.value;
             first = first.next;
             if (first == null) {
@@ -50,7 +48,7 @@ public class Queue {
         }
     }
     public int readMove(){
-        return first.moved;
+        return first.move;
     }
     public boolean isNotEmpty() {
         return first != null || last != null;

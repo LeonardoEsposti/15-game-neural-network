@@ -1,19 +1,17 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class NeuralNetwork implements Helpers {
 
-    private final List<Layer> layers;
+    private final ArrayList<Layer> layers;
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
-        this.layers.add(new HiddenLayer(16, 256));
         this.layers.add(new HiddenLayer(256, 512));
-        this.layers.add(new HiddenLayer(512, 128));
+        this.layers.add(new HiddenLayer(512, 256));
+        this.layers.add(new HiddenLayer(256, 128));
         this.layers.add(new OutputLayer(128, 1));
     }
 
@@ -25,9 +23,7 @@ public class NeuralNetwork implements Helpers {
     }
 
     public void train(Matrix input, Matrix target) {
-
         final double learningRate = 0.0001;
-
         Matrix prediction = this.predict(input);
         Matrix error = prediction.subtract(target);
         for (int i = this.layers.size() - 1; i >= 0; i--) {
@@ -37,6 +33,8 @@ public class NeuralNetwork implements Helpers {
     }
 
     static void main() {
+
+        // TEST: backward propagation
         NeuralNetwork nn = new NeuralNetwork();
         double[][] in = {{5}, {1}, {2}, {4}, {9}, {7}, {3}, {8}, {13}, {6}, {10}, {12}, {14}, {0}, {11}, {15}};
         Matrix input = new Matrix(in);
