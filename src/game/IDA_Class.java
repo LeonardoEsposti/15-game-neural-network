@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IDA_Class {
-    private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(12);
+    private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(20);
 
     private static final java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
 
@@ -84,7 +84,7 @@ public class IDA_Class {
                         alreadySaved.add(boardHash);
                     }
                 }
-                System.out.println("Path solved. Unique boards appended to dataset.");
+                System.out.println("Path solved and board written in the dataset.");
 
             } catch (java.io.IOException e) {
                 System.out.println("Error while saving the training data.");

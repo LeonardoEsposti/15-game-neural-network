@@ -18,6 +18,12 @@ public class GameBoard implements Moves {
 
     public GameBoard(int[] board) {
         this.board = board;
+        for (int i = 0; i < 16; i++){
+            if (board[i]==0) {
+                coords = i;
+                break;
+            }
+        }
     }
 
     public GameBoard(int scramble) {
@@ -200,7 +206,17 @@ public class GameBoard implements Moves {
         }
         return children;
     }
-
+    public Queue Children(int doNOTINCLUDE) {
+        Queue children = new Queue();
+        for (int move : this.legalMoves()) {
+            if (move != 0 && move!=doNOTINCLUDE) {
+                GameBoard child = this.copy();
+                child.move(move);
+                children.add(child,move);
+            }
+        }
+        return children;
+    }
 
     public boolean is_conflict_rows(int x, int x2, int row) {
         return (board[x + 4 * row] != 0) && board[x2 + 4 * row] != 0
