@@ -37,6 +37,8 @@ public abstract class Layer implements Helpers {
     }
 
     protected Layer(int inputSize, int outputSize, Matrix savedWeights, Matrix savedBiases) {
+        this.layerN = total;
+        total++;
         this.values = new Matrix(inputSize, 1);
         this.weights = savedWeights;
         this.biases = savedBiases;
