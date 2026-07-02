@@ -8,7 +8,7 @@ class OutputLayer extends Layer {
         super(inputSize, outputSize);
     }
 
-    OutputLayer(int inputSize, int outputSize, Matrix savedWeights, Matrix  savedBiases) {
+    OutputLayer(int inputSize, int outputSize, Matrix savedWeights, Matrix savedBiases) {
         super(inputSize, outputSize, savedWeights, savedBiases);
     }
     protected Matrix forwardPass(Matrix input) {

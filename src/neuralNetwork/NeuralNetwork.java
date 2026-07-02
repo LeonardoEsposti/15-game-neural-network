@@ -11,7 +11,7 @@ public class NeuralNetwork implements Helpers {
     public final ArrayList<Layer> layers;
 
     private final boolean INITIALIZATION = false;
-    private final String filepath = "saved_params.csv";
+    private final String filepath = "./src/training/saved_params.csv";
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
@@ -20,9 +20,7 @@ public class NeuralNetwork implements Helpers {
             this.layers.add(new HiddenLayer(512, 256));
             this.layers.add(new HiddenLayer(256, 128));
             this.layers.add(new OutputLayer(128, 1));
-        } else {
-            loadInfo();
-        }
+        } else this.loadInfo();
     }
 
     public Matrix predict(Matrix input) {

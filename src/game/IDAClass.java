@@ -68,7 +68,7 @@ public class IDAClass {
             }
 
             //to save on a file                                                                                     true means it adds on the current file
-            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("training_data.csv", true))) {
+            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("dataset.csv", true))) {
                 distance = path.size() - 1;
                 for (int i = 0; i < path.size(); i++) {
                     GameBoard b = path.get(i);

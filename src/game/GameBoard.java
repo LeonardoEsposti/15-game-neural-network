@@ -146,6 +146,17 @@ public class GameBoard {
         return x.toString();
     }
 
+    public int[] toOneHotEncoding() {
+        int[] res = new int[256];
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                if (j == this.board[i])
+                    res[i*16+j] = 1;
+            }
+        }
+        return res;
+    }
+
     public boolean equals(Object obj) {
         if (obj == null || this.getClass() != obj.getClass())
             return false;
