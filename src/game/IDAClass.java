@@ -2,17 +2,16 @@ package game;
 
 import dataStructures.Queue;
 import exceptions.EmptyQueueException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IDA_Class {
+public class IDAClass {
     private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(20);
 
     private static final java.util.HashSet<String> alreadySaved = new java.util.HashSet<>(); //avoid repetitions
 
     public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
-        int f = g + board.euristic();
+        int f = g + board.heuristic();
         if (f > bound) {
             return f;
         }
@@ -20,7 +19,7 @@ public class IDA_Class {
             return -1;
         }
         int min = Integer.MAX_VALUE;
-        Queue children = board.Children();
+        Queue children = board.children();
         while (children.isNotEmpty()) {
             GameBoard child = children.get();
             if (path.contains(child)) {
@@ -44,7 +43,7 @@ public class IDA_Class {
 
     public void ida(GameBoard board) throws EmptyQueueException {
         int t;
-        int bound = board.euristic();
+        int bound = board.heuristic();
         while (true) {
             ArrayList<GameBoard> path = new ArrayList<>();
             path.add(board);
@@ -56,7 +55,7 @@ public class IDA_Class {
             GameBoard current = path.getLast();
             int distance = data.get(current);
             while (distance > 0) {
-                Queue children = current.Children();
+                Queue children = current.children();
                 while (children.isNotEmpty()) {
                     GameBoard child = children.get();
                     if (data.containsKey(child) && data.get(child) == distance - 1) {
@@ -78,7 +77,7 @@ public class IDA_Class {
 
                         int trueDistance = distance - i;
 
-                        writer.write(b.boardToSave() + trueDistance);
+                        writer.write(b.toString() + trueDistance);
                         writer.newLine();
 
                         alreadySaved.add(boardHash);

@@ -2,7 +2,6 @@ package game;
 
 import dataStructures.Queue;
 import exceptions.EmptyQueueException;
-
 import java.util.HashMap;
 
 public class ReverseScramble {
@@ -19,7 +18,7 @@ public class ReverseScramble {
             try {
                 while (main_queue.isNotEmpty()) {
                     GameBoard top = main_queue.get();
-                    Queue children = top.Children();
+                    Queue children = top.children();
                     while (children.isNotEmpty()) {
                         GameBoard child = children.get();
                         if (!distances.containsKey(child)) {

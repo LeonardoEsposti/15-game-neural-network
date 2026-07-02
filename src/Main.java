@@ -1,10 +1,8 @@
-import dataStructures.Matrix;
 import exceptions.EmptyQueueException;
 import game.GameBoard;
-import game.IDA_Class;
-import game.SolveWIthNeuralNetwork;
+import game.Solver;
 import neuralNetwork.NeuralNetwork;
-import training.Training;
+import training.Trainer;
 
 public class Main {
     public static void main(String[] args) throws EmptyQueueException {
@@ -20,8 +18,8 @@ public class Main {
             solver.ida(gameBoard);
         }*/
         NeuralNetwork nn= new NeuralNetwork();
-        Training.trainFromDataset("training_data.csv",nn);
-        SolveWIthNeuralNetwork solver=  new SolveWIthNeuralNetwork(nn);
+        Trainer.trainFromDataset("training_data.csv",nn);
+        Solver solver=  new Solver(nn);
         solver.solve(new GameBoard(new int[]{2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6}));
     }
 }
