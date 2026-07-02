@@ -76,8 +76,8 @@ public abstract class Layer implements Helpers {
     }
 
     public String weigthsToString() {
-        StringBuilder weightString= new StringBuilder().append(this.weights.getNumRows()).append( "," ).append(this.weights.getNumCols());
-        return  weightString.append(matrixToString(this.weights)).toString();
+        StringBuilder weightString = new StringBuilder().append(this.weights.getNumRows()).append( "," ).append(this.weights.getNumCols());
+        return weightString.append(matrixToString(this.weights)).toString();
     }
     public String biasesToString() {
         StringBuilder biasesString= new StringBuilder().append(this.weights.getNumRows()).append( ",0" );

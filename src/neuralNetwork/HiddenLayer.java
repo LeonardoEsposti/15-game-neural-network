@@ -8,8 +8,8 @@ class HiddenLayer extends Layer {
         super(inputSize, outputSize);
     }
 
-    HiddenLayer(int inputSize, int outputSize, Matrix savedWeights, Matrix  savedBiases) {
-        super(inputSize, outputSize,savedWeights,savedBiases);
+    HiddenLayer(int inputSize, int outputSize, Matrix savedWeights, Matrix savedBiases) {
+        super(inputSize, outputSize, savedWeights, savedBiases);
     }
 
     protected Matrix forwardPass(Matrix input) {

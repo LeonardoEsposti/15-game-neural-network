@@ -12,14 +12,14 @@ public class Main {
                 9, 10, 7, 12,
                 13, 15, 14, 0
         };
-        /*IDA_Class solver = new IDA_Class();
-        while(true){
+        /* IDAClass solver = new IDAClass();
+        while(true) {
             GameBoard gameBoard = new GameBoard(170);
             solver.ida(gameBoard);
-        }*/
+        } */
         NeuralNetwork nn= new NeuralNetwork();
-        Trainer.trainFromDataset("training_data.csv",nn);
-        Solver solver=  new Solver(nn);
+        Trainer.trainFromDataset("./src/training/dataset.csv", nn);
+        Solver solver = new Solver(nn);
         solver.solve(new GameBoard(new int[]{2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6}));
     }
 }
