@@ -30,7 +30,7 @@ public class Matrix implements Helpers {
         this.entries = new double[rows][cols];
     }
 
-    // used only for testing purposes
+
     public Matrix(double[][] matrix) {
         this.rows = matrix.length;
         this.cols = matrix[0].length;
