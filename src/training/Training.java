@@ -1,6 +1,7 @@
 package training;
 
 import dataStructures.Matrix;
+import neuralNetwork.Layer;
 import neuralNetwork.NeuralNetwork;
 
 import java.io.BufferedReader;
@@ -36,6 +37,20 @@ public class Training {
                 rowCount++;
 
                 if (rowCount % 1000 == 0) {
+                    try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("saved_W_B.csv", false))) {
+                        for (Layer layer : nn.layers) {
+
+                            writer.write(layer.biasesToString());
+                            writer.newLine();
+                            writer.write(layer.weigthsToString());
+                            writer.newLine();
+
+                            System.out.println("Bias and weights for layer " + layer.getN() + " saved.");
+                        }
+
+                    } catch (java.io.IOException e) {
+                        System.out.println("Error while saving the weights and biases data.");
+                    }
                     System.out.println("Trained on " + rowCount + " boards...");
                     System.out.println("Prediction for board 2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6 is (target=50): " + nn.predict(testing).getFirstEntry());
                 }

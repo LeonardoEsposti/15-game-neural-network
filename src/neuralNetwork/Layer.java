@@ -1,23 +1,45 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
+
 import java.util.Random;
 
-abstract class Layer implements Helpers {
+
+public abstract class Layer implements Helpers {
+
+    //for testing
+    private static int total = 0;
+    private int layerN = 0;
+
+    public int getN() {
+        return layerN;
+    }
+
 
     protected Matrix values;  // n x 1 matrix
     protected Matrix weights;  // k x n matrix
     private Matrix biases;  // k x 1 matrix
     protected Matrix input;
 
+
     protected abstract Matrix forwardPass(Matrix input);
 
     protected Layer(int inputSize, int outputSize) {
+        this.layerN = total;
+        total++;
+
         this.values = new Matrix(inputSize, 1);
         this.weights = new Matrix(outputSize, inputSize);
         this.biases = new Matrix(outputSize, 1);
         this.initWeights();
         this.biases.fill(0);
+
+    }
+
+    protected Layer(int inputSize, int outputSize, Matrix savedWeights, Matrix savedBiases) {
+        this.values = new Matrix(inputSize, 1);
+        this.weights = savedWeights;
+        this.biases = savedBiases;
     }
 
     private void initWeights() {
@@ -46,6 +68,26 @@ abstract class Layer implements Helpers {
         this.weights = this.weights.subtract(weightGradient.multiplyByScalar(learningRate));  // W = W - (dW * learningRate)
         this.biases = this.biases.subtract(gradient.multiplyByScalar(learningRate));  // B = B - (dZ * learningRate)
     }
+
+    private StringBuilder matrixToString(Matrix matrix) {
+        StringBuilder newString = new StringBuilder();
+        for (int i = 0; i < matrix.getNumRows(); i++) {
+            for (int j = 0; j < matrix.getNumCols(); j++) {
+                newString.append(",").append(this.weights.getEntry(i, j));
+            }
+        }
+        return newString;
+    }
+
+    public String weigthsToString() {
+        StringBuilder weightString= new StringBuilder().append(this.weights.getNumRows()).append( "," ).append(this.weights.getNumCols());
+        return  weightString.append(matrixToString(this.weights)).toString();
+    }
+    public String biasesToString() {
+        StringBuilder biasesString= new StringBuilder().append(this.weights.getNumRows()).append( ",0" );
+        return  biasesString.append(matrixToString(this.biases)).toString();
+    }
+
 }
 
 
