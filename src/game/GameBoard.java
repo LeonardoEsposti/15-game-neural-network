@@ -289,8 +289,3 @@ public class GameBoard {
         return manhattan() + linearConflicts();
     }
 }
-
-
-
-
-
