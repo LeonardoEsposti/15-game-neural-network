@@ -4,23 +4,27 @@ import dataStructures.Queue;
 import exceptions.OutOfBoundsException;
 import java.util.Arrays;
 
-public class GameBoard implements Moves {
+public class GameBoard {
 
     private int[] board = new int[16];
-    private int coords;
+    private int coords = 15;
 
     public GameBoard() {
         for (int i = 1; i < 16; i++)
-            this.board[i - 1] = i;
-        this.coords = 15;
+            this.board[i-1] = i;
         this.board[this.coords] = 0;
+    }
+
+    public GameBoard(GameBoard gb) {
+        this.board = gb.board;
+        this.coords = gb.coords;
     }
 
     public GameBoard(int[] board) {
         this.board = board;
-        for (int i = 0; i < 16; i++){
-            if (board[i]==0) {
-                coords = i;
+        for (int i = 0; i < 16; i++) {
+            if (board[i] == 0) {
+                this.coords = i;
                 break;
             }
         }
@@ -28,316 +32,261 @@ public class GameBoard implements Moves {
 
     public GameBoard(int scramble) {
         this();
-        this.board = this.scrambleBoard(scramble);
+        this.scrambleBoard(scramble);
     }
 
-    public int[] scrambleBoard(int scramble) {
-        int dontMove = 0;
-        while (scramble > 0) {
-            scramble -= 1;
-            int newMove;
-            try {
-                do {
-                    newMove = (int) (Math.random() * 4) + 1;
-                } while (newMove == dontMove); // keep looping until you get a valid move
-                move(newMove);
-                dontMove = (newMove + 1) % 4 + 1;   //mossa da NON fare (opposto di newMove)
-            } catch (OutOfBoundsException e) {
-                scramble++;
-            }
-        }
-        return board;
+    public int[] getBoard() {
+        return this.board;
     }
 
-
-    public void move(int m) throws OutOfBoundsException {
-        switch (m) {
-            case 1 -> moveUP();
-            case 2 -> moveRIGHT();
-            case 3 -> moveDOWN();
-            case 4 -> moveLEFT();
-            default -> {
-            }
-        }
-    }
-
-
-    public void moveUP() throws OutOfBoundsException {
-        if (coords < 4) {
-            throw new OutOfBoundsException();
-        }
-        int temp = board[coords - 4];
-        board[coords - 4] = board[coords];
-        board[coords] = temp;
-        coords = coords - 4;
-
-    }
-
-    public void moveDOWN() throws OutOfBoundsException {
-        if (coords > 11) {
-            throw new OutOfBoundsException();
-        }
-        int temp = board[coords + 4];
-        board[coords + 4] = board[coords];
-        board[coords] = temp;
-        coords = coords + 4;
-
-    }
-
-    public void moveLEFT() throws OutOfBoundsException {
-        if (coords % 4 == 0) {
-            throw new OutOfBoundsException();
-        }
-        int temp = board[coords - 1];
-        board[coords - 1] = board[coords];
-        board[coords] = temp;
-        coords = coords - 1;
-
-    }
-
-    public void moveRIGHT() throws OutOfBoundsException {
-        if (coords % 4 == 3) {
-            throw new OutOfBoundsException();
-        }
-        int temp = board[coords + 1];
-        board[coords + 1] = board[coords];
-        board[coords] = temp;
-        coords = coords + 1;
-    }
-
-    public void printCoords() {
-        System.out.print(this.coords);
-    }
-
-    public void printBoard() {
-        for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 4; i++) {
-                System.out.print(board[i + 4 * j]);
-                System.out.print("| ");
-            }
-            System.out.println();
-        }
-
-        printCoords();
-        System.out.println();
-    }
-
-    public boolean isComplete() {
+    public boolean isSolved() {
         for (int i = 0; i < 15; i++) {
-            if (board[i] != i + 1)
+            if (this.board[i] != i + 1)
                 return false;
         }
         return true;
     }
 
-    public int[] getBoard() {
-        return board;
+    private void scrambleBoard(int scramble) {
+        int dontMove = 0;
+        while (scramble > 0) {
+            scramble--;
+            int newMove;
+            do {
+                newMove = (int) (Math.random() * 4) + 1;  // generates a random number between 1 and 4
+            } while (newMove == dontMove);
+            try {
+                this.move(newMove);
+                dontMove = (newMove + 1) % 4 + 1;  // opposite move is not allowed as next move
+            } catch (OutOfBoundsException e) {
+                scramble++;
+            }
+        }
     }
 
-
-    public boolean equals(Object obj) { //here we use object because we need to override method equals for the hash map to work
-
-        if (obj == null || this.getClass() != obj.getClass()) {
-            return false;
-        }
-        GameBoard compare = (GameBoard) obj; //here you are doing "casting": you're telling the compiler that the obj is actually a gameboard
-
-        if (compare != this) {
-            for (int i = 0; i < 16; i++) {
-                if (board[i] != compare.board[i])
-                    return false;
-
+    public void move(int m) throws OutOfBoundsException {
+        switch (m) {
+            case 1 -> moveUp();
+            case 2 -> moveRight();
+            case 3 -> moveDown();
+            case 4 -> moveLeft();
+            default -> {
             }
-
         }
-        return true;
+    }
+
+    private void moveUp() throws OutOfBoundsException {
+        if (coords < 4)
+            throw new OutOfBoundsException();
+        int temp = board[coords-4];
+        board[coords-4] = board[coords];
+        board[coords] = temp;
+        coords -= 4;
+    }
+
+    private void moveRight() throws OutOfBoundsException {
+        if (coords % 4 == 3)
+            throw new OutOfBoundsException();
+        int temp = board[coords+1];
+        board[coords+1] = board[coords];
+        board[coords] = temp;
+        coords++;
+    }
+
+    private void moveDown() throws OutOfBoundsException {
+        if (coords > 11)
+            throw new OutOfBoundsException();
+        int temp = board[coords+4];
+        board[coords+4] = board[coords];
+        board[coords] = temp;
+        coords += 4;
+    }
+
+    private void moveLeft() throws OutOfBoundsException {
+        if (coords % 4 == 0)
+            throw new OutOfBoundsException();
+        int temp = board[coords-1];
+        board[coords-1] = board[coords];
+        board[coords] = temp;
+        coords--;
+    }
+
+    private int[] legalMoves() {
+        int[] legal = new int[4];
+        if (coords >= 4)
+            legal[0] = 1;
+        if (coords % 4 != 3)
+            legal[1] = 2;
+        if (coords < 12)
+            legal[2] = 3;
+        if (coords % 4 != 0)
+            legal[3] = 4;
+        return legal;
+    }
+
+    public void printBoard() {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 4; i++) {
+                System.out.print(this.board[i+j*4]);
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
     }
 
     public int hashCode() {
         return Arrays.hashCode(this.board);
     }
 
-    public String boardToSave() {
+    public String toString() {
         StringBuilder x = new StringBuilder();
         for (int i = 0; i < 16; i++) {
-            x.append(board[i]).append(","); //more efficient by using stringbuilder
+            x.append(this.board[i]).append(",");
         }
         return x.toString();
     }
 
-    @Override //to override the inherited method by using an understandable name
-    public String toString() {
-        return boardToSave();
-    }
-
-    public int[] legalMoves() {
-        int[] legal = new int[4]; // it's already filled with zeros
-        if (coords >= 4) {
-            legal[0] = 1;
-        }
-        if (coords % 4 != 3) {
-            legal[1] = 2;
-        }
-        if (coords < 12) {
-            legal[2] = 3;
-        }
-        if (coords % 4 != 0) {
-            legal[3] = 4;
-        }
-        return legal;
-    }
-
-    public GameBoard copy() {
-        GameBoard copy = new GameBoard();
-        System.arraycopy(board, 0, copy.board, 0, 16); //more efficient
-        copy.coords = this.coords;
-        return copy;
-
-    }
-
-    public Queue Children() {
-        Queue children = new Queue();
-        for (int move : this.legalMoves()) {
-            if (move != 0) {
-                GameBoard child = this.copy();
-                child.move(move);
-                children.add(child,move);
+    public boolean equals(Object obj) {
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+        GameBoard compare = (GameBoard) obj;
+        if (compare != this) {
+            for (int i = 0; i < 16; i++) {
+                if (this.board[i] != compare.board[i])
+                    return false;
             }
         }
-        return children;
+        return true;
     }
-    public Queue Children(int doNOTINCLUDE) {
+
+    public Queue children() {
         Queue children = new Queue();
-        for (int move : this.legalMoves()) {
-            if (move != 0 && move!=doNOTINCLUDE) {
-                GameBoard child = this.copy();
-                child.move(move);
-                children.add(child,move);
+        for (int m : this.legalMoves()) {
+            if (m != 0) {
+                GameBoard child = new GameBoard(this);
+                child.move(m);
+                children.add(child, m);
             }
         }
         return children;
     }
 
-    public boolean is_conflict_rows(int x, int x2, int row) {
-        return (board[x + 4 * row] != 0) && board[x2 + 4 * row] != 0
-                && (board[x + 4 * row] - 1) / 4 == row && (board[x2 + 4 * row] - 1) / 4 == row //if in the correct row
-                && board[x + 4 * row] > board[x2 + 4 * row];//if the left one is bigger
+    public Queue children(int exception) {
+        Queue children = new Queue();
+        for (int m : this.legalMoves()) {
+            if (m != 0 && m != exception) {
+                GameBoard child = new GameBoard(this);
+                child.move(m);
+                children.add(child, m);
+            }
+        }
+        return children;
     }
 
-    public boolean is_conflict_columns(int y, int y2, int column) {
-
-        return (board[column + 4 * y] != 0) && board[column + 4 * y2] != 0
-                && (board[column + 4 * y] - 1) % 4 == column && (board[column + 4 * y2] - 1) % 4 == column //in the correct column
-                && board[column + 4 * y] > board[column + 4 * y2]; //if the top one is bigger
+    private boolean isRowConflict(int x1, int x2, int row) {
+        return (board[x1 + 4 * row] != 0) && board[x2 + 4 * row] != 0
+                && (board[x1 + 4 * row] - 1) / 4 == row && (board[x2 + 4 * row] - 1) / 4 == row  // if in the correct row
+                && board[x1 + 4 * row] > board[x2 + 4 * row];  // if the left one is bigger
     }
 
-    public int linearConflictsRows() {
+    private boolean isColConflict(int y1, int y2, int column) {
+        return (board[column + 4 * y1] != 0) && board[column + 4 * y2] != 0
+                && (board[column + 4 * y1] - 1) % 4 == column && (board[column + 4 * y2] - 1) % 4 == column  // if in the correct column
+                && board[column + 4 * y1] > board[column + 4 * y2];  // if the top one is bigger
+    }
+
+    private int linearConflictsRows() {
         int conflicts = 0;
         for (int y = 0; y < 4; y++) {
             boolean[] ignored = new boolean[4];
             while (true) {
-                int[] lineConflicts = new int[4];
-                for (int x = 0; x < 4; x++) {
-                    if (ignored[x]) {
+                int[] linearConflicts = new int[4];
+                for (int x1 = 0; x1 < 4; x1++) {
+                    if (ignored[x1])
                         continue;
-                    }
-                    for (int x2 = x + 1; x2 < 4; x2++) {
-                        if (ignored[x2]) {
+                    for (int x2 = x1 + 1; x2 < 4; x2++) {
+                        if (ignored[x2])
                             continue;
+                        if (this.isRowConflict(x1, x2, y)) {
+                            linearConflicts[x1]++;
+                            linearConflicts[x2]++;
                         }
-                        if (this.is_conflict_rows(x, x2, y)) {
-                            lineConflicts[x]++;
-                            lineConflicts[x2]++;
-                        }
-
                     }
-
                 }
                 int max = 0;
                 int maxIndex = -1;
-                for (int t = 0; t < lineConflicts.length; t++) {
-                    int current = lineConflicts[t];
+                for (int t = 0; t < linearConflicts.length; t++) {
+                    int current = linearConflicts[t];
                     if (current > max) {
                         max = current;
                         maxIndex = t;
                     }
                 }
-                if (max == 0) {
+                if (max == 0)
                     break;
-                }
                 conflicts += 2;
                 ignored[maxIndex] = true;
-
-
             }
         }
         return conflicts;
     }
 
-    public int linearConflictsColumns() {
+    private int linearConflictsCols() {
         int conflicts = 0;
         for (int x = 0; x < 4; x++) {
             boolean[] ignored = new boolean[4];
             while (true) {
-                int[] lineConflicts = new int[4];
-                for (int y = 0; y < 4; y++) {
-                    if (ignored[y]) {
+                int[] linearConflicts = new int[4];
+                for (int y1 = 0; y1 < 4; y1++) {
+                    if (ignored[y1])
                         continue;
-                    }
-                    for (int y2 = y + 1; y2 < 4; y2++) {
-                        if (ignored[y2]) {
+                    for (int y2 = y1 + 1; y2 < 4; y2++) {
+                        if (ignored[y2])
                             continue;
+                        if (this.isColConflict(y1, y2, x)) {
+                            linearConflicts[y1]++;
+                            linearConflicts[y2]++;
                         }
-                        if (this.is_conflict_columns(y, y2, x)) {
-                            lineConflicts[y]++;
-                            lineConflicts[y2]++;
-                        }
-
                     }
-
                 }
                 int max = 0;
                 int maxIndex = -1;
-                for (int t = 0; t < lineConflicts.length; t++) {
-                    int current = lineConflicts[t];
+                for (int t = 0; t < linearConflicts.length; t++) {
+                    int current = linearConflicts[t];
                     if (current > max) {
                         max = current;
                         maxIndex = t;
                     }
                 }
-                if (max == 0) {
+                if (max == 0)
                     break;
-                }
                 conflicts += 2;
                 ignored[maxIndex] = true;
-
-
             }
         }
         return conflicts;
     }
 
-    public int linearConflicts() {
-        return linearConflictsRows() + linearConflictsColumns();
+    private int linearConflicts() {
+        return linearConflictsRows() + linearConflictsCols();
     }
 
-    public int Manhattan() {
-        int counter = 0;
+    private int manhattan() {
+        int count = 0;
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
-                if (board[c + 4 * r] == 0) {
+                if (board[c + r * 4] == 0)
                     continue;
-                }
                 int actualRow = (board[c + 4 * r] - 1) / 4;
                 int actualCol = (board[c + 4 * r] - 1) % 4;
-                counter += Math.abs(r - actualRow) + Math.abs(c - actualCol);
+                count += Math.abs(r - actualRow) + Math.abs(c - actualCol);
             }
         }
-        return counter;
+        return count;
     }
 
-    public int euristic() {
-        return Manhattan() + linearConflicts();
+    public int heuristic() {
+        return manhattan() + linearConflicts();
     }
 }
 

@@ -1,7 +1,6 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +11,7 @@ public class NeuralNetwork implements Helpers {
     public final ArrayList<Layer> layers;
 
     private final boolean INITIALIZATION = false;
-    private final String filepath = "saved_W_B.csv";
+    private final String filepath = "saved_params.csv";
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
@@ -22,10 +21,9 @@ public class NeuralNetwork implements Helpers {
             this.layers.add(new HiddenLayer(256, 128));
             this.layers.add(new OutputLayer(128, 1));
         } else {
-            loadInfos();
+            loadInfo();
         }
     }
-
 
     public Matrix predict(Matrix input) {
         Matrix values = input;
@@ -44,15 +42,12 @@ public class NeuralNetwork implements Helpers {
         }
     }
 
-    // the weigths are saved: rows,cols, entry1,entry2,....,entry(rxc)
-    // biases are saved: rows,0 , entry1,entry2,......, entryR
-    private void loadInfos() {
-        int cols = 0;
-        int rows = 0;
-        int hiddenLayers = 0;
-        Matrix savedWeights = null;
-        Matrix savedBiases = null;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
+    // saved weights format: rows, cols, entry1,entry2,....,entry(rxc)
+    // saved biases format: rows, 0, entry1,entry2,......,entryR
+    private void loadInfo() {
+        int cols = 0, rows = 0, numHiddenLayers = 0;
+        Matrix savedWeights = null, savedBiases = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(this.filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 for (int k = 0; k < 2; k++) {
@@ -66,22 +61,22 @@ public class NeuralNetwork implements Helpers {
                     double[][] newMatrix = new double[rows][cols];
                     for (int i = 0; i < rows; i++) {
                         for (int j = 0; j < cols; j++) {
-                            newMatrix[i][j] = Double.parseDouble(element[i * cols + j + 2]);
+                            newMatrix[i][j] = Double.parseDouble(element[i*cols+j+2]);
                         }
                     }
                     if (k == 0) savedBiases = new Matrix(newMatrix);
                     else savedWeights = new Matrix(newMatrix);
                 }
-                if (hiddenLayers < 3) {
+                if (numHiddenLayers < 3) {
                     this.layers.add(new HiddenLayer(cols, rows, savedWeights, savedBiases));
-                    hiddenLayers++;
+                    numHiddenLayers++;
                 } else {
                     this.layers.add(new OutputLayer(cols, rows, savedWeights, savedBiases));
                     break;
                 }
             }
         } catch (IOException e) {
-            System.out.println("Could not find or read the file: " + filepath);
+            System.out.println("Could not find or read the file: " + this.filepath);
         }
     }
 

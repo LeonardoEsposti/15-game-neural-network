@@ -5,10 +5,10 @@ import dataStructures.Queue;
 import exceptions.EmptyQueueException;
 import neuralNetwork.NeuralNetwork;
 
-public class SolveWIthNeuralNetwork {
+public class Solver {
     private final NeuralNetwork neuralNetwork;
 
-    public SolveWIthNeuralNetwork(NeuralNetwork neuralNetwork) {
+    public Solver(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
 
@@ -16,12 +16,12 @@ public class SolveWIthNeuralNetwork {
         Queue children;
         GameBoard parentBoard = board;
         int moveToNotInclude = 0;
-        while (!parentBoard.isComplete()) {
+        while (!parentBoard.isSolved()) {
             double minPrediction = Double.MAX_VALUE;
             int smallestMove = 0;
             GameBoard smallestBoard = null;
 
-            children = parentBoard.Children(moveToNotInclude);
+            children = parentBoard.children(moveToNotInclude);
 
             while (children.isNotEmpty()) {
                 int moved = children.readMove();

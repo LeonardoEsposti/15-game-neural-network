@@ -41,9 +41,8 @@ public class Queue {
         else {
             GameBoard returnValue = first.value;
             first = first.next;
-            if (first == null) {
+            if (first == null)
                 last = null;
-            }
             return returnValue;
         }
     }

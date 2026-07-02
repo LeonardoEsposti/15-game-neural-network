@@ -3,12 +3,11 @@ package training;
 import dataStructures.Matrix;
 import neuralNetwork.Layer;
 import neuralNetwork.NeuralNetwork;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Training {
+public class Trainer {
     private static final Matrix testing = new Matrix(new int[]{2, 11, 8, 13, 5, 12, 4, 15, 0, 7, 1, 10, 14, 9, 3, 6});
 
     public static void trainFromDataset(String filepath, NeuralNetwork nn) {

@@ -7,7 +7,7 @@ import java.util.Random;
 
 public abstract class Layer implements Helpers {
 
-    //for testing
+    // for testing
     private static int total = 0;
     private int layerN = 0;
 
@@ -15,30 +15,24 @@ public abstract class Layer implements Helpers {
         return layerN;
     }
 
-
     protected Matrix values;  // n x 1 matrix
     protected Matrix weights;  // k x n matrix
     private Matrix biases;  // k x 1 matrix
     protected Matrix input;
 
-
     protected abstract Matrix forwardPass(Matrix input);
 
     protected Layer(int inputSize, int outputSize) {
-        this.layerN = total;
-        total++;
-
+        this.layerN = total++;
         this.values = new Matrix(inputSize, 1);
         this.weights = new Matrix(outputSize, inputSize);
         this.biases = new Matrix(outputSize, 1);
         this.initWeights();
         this.biases.fill(0);
-
     }
 
     protected Layer(int inputSize, int outputSize, Matrix savedWeights, Matrix savedBiases) {
-        this.layerN = total;
-        total++;
+        this.layerN = total++;
         this.values = new Matrix(inputSize, 1);
         this.weights = savedWeights;
         this.biases = savedBiases;
