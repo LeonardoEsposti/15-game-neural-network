@@ -73,7 +73,7 @@ public abstract class Layer implements Helpers {
         StringBuilder newString = new StringBuilder();
         for (int i = 0; i < matrix.getNumRows(); i++) {
             for (int j = 0; j < matrix.getNumCols(); j++) {
-                newString.append(",").append(this.weights.getEntry(i, j));
+                newString.append(",").append(matrix.getEntry(i, j));
             }
         }
         return newString;
