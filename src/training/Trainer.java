@@ -36,7 +36,7 @@ public class Trainer {
                 rowCount++;
 
                 if (rowCount % 1000 == 0) {
-                    try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("./src/training/saved_params.csv", false))) {
+                    try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/saved_params.csv", false))) {
                         for (Layer layer : nn.layers) {
 
                             writer.write(layer.biasesToString());
