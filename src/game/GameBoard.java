@@ -4,14 +4,15 @@ import dataStructures.Queue;
 import exceptions.OutOfBoundsException;
 import java.util.Arrays;
 
-public class GameBoard {
+public class GameBoard implements Moves {
 
     private int[] board = new int[16];
     private int coords = 15;
 
     public GameBoard() {
-        for (int i = 1; i < 16; i++)
-            this.board[i-1] = i;
+        for (int i = 1; i < 16; i++) {
+            this.board[i - 1] = i;
+        }
         this.board[this.coords] = 0;
     }
 
@@ -64,62 +65,34 @@ public class GameBoard {
         }
     }
 
-    public void move(int m) throws OutOfBoundsException {
+    private void move(int m) throws OutOfBoundsException {
         switch (m) {
-            case 1 -> moveUp();
-            case 2 -> moveRight();
-            case 3 -> moveDown();
-            case 4 -> moveLeft();
+            case 1 -> move(isUpLegal(coords), -4);
+            case 2 -> move(isRightLegal(coords), 1);
+            case 3 -> move(isDownLegal(coords), 4);
+            case 4 -> move(isLeftLegal(coords), -1);
             default -> {
             }
         }
     }
 
-    private void moveUp() throws OutOfBoundsException {
-        if (coords < 4)
-            throw new OutOfBoundsException();
-        int temp = board[coords-4];
-        board[coords-4] = board[coords];
+    private void move(boolean isLegal, int offset) throws OutOfBoundsException {
+        if (!isLegal) throw new OutOfBoundsException();
+        int temp = board[coords+offset];
+        board[coords+offset] = board[coords];
         board[coords] = temp;
-        coords -= 4;
-    }
-
-    private void moveRight() throws OutOfBoundsException {
-        if (coords % 4 == 3)
-            throw new OutOfBoundsException();
-        int temp = board[coords+1];
-        board[coords+1] = board[coords];
-        board[coords] = temp;
-        coords++;
-    }
-
-    private void moveDown() throws OutOfBoundsException {
-        if (coords > 11)
-            throw new OutOfBoundsException();
-        int temp = board[coords+4];
-        board[coords+4] = board[coords];
-        board[coords] = temp;
-        coords += 4;
-    }
-
-    private void moveLeft() throws OutOfBoundsException {
-        if (coords % 4 == 0)
-            throw new OutOfBoundsException();
-        int temp = board[coords-1];
-        board[coords-1] = board[coords];
-        board[coords] = temp;
-        coords--;
+        coords += offset;
     }
 
     private int[] legalMoves() {
         int[] legal = new int[4];
-        if (coords >= 4)
+        if (isUpLegal(coords))
             legal[0] = 1;
-        if (coords % 4 != 3)
+        if (isRightLegal(coords))
             legal[1] = 2;
-        if (coords < 12)
+        if (isDownLegal(coords))
             legal[2] = 3;
-        if (coords % 4 != 0)
+        if (isLeftLegal(coords))
             legal[3] = 4;
         return legal;
     }
@@ -298,5 +271,9 @@ public class GameBoard {
 
     public int heuristic() {
         return manhattan() + linearConflicts();
+    }
+
+    static void main() {
+        new GameBoard(100).printBoard();
     }
 }
