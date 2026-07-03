@@ -1,12 +1,15 @@
 package dataStructures;
 
 import game.GameBoard;
-import neuralNetwork.Helpers;
 
-public class Matrix implements Helpers {
+public class Matrix {
 
     private final int rows, cols;
     private final double[][] entries;
+
+    static boolean haveDifferentDims(Matrix m1, Matrix m2) {
+        return m1.getNumRows() != m2.getNumRows() || m1.getNumCols() != m2.getNumCols();
+    }
 
     public Matrix(int rows, int cols) {
         this.rows = rows;
@@ -69,7 +72,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix add(Matrix m) throws IllegalArgumentException {
-        if (Helpers.hasIncorrectDims(this, m))
+        if (haveDifferentDims(this, m))
             throw new IllegalArgumentException("Cannot add matrices of different dimensions!");
         Matrix res = new Matrix(this.rows, this.cols);
         for (int i = 0; i < res.rows; i++) {
@@ -81,7 +84,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix subtract(Matrix m) throws IllegalArgumentException {
-        if (Helpers.hasIncorrectDims(this, m))
+        if (haveDifferentDims(this, m))
             throw new IllegalArgumentException("Cannot subtract matrices of different dimensions!");
         Matrix res = new Matrix(this.rows, this.cols);
         for (int i = 0; i < res.rows; i++) {
@@ -103,7 +106,7 @@ public class Matrix implements Helpers {
     }
 
     public Matrix multiplyElementWise(Matrix m) throws IllegalArgumentException {
-        if (Helpers.hasIncorrectDims(this, m))
+        if (haveDifferentDims(this, m))
             throw new IllegalArgumentException("Cannot multiply (element-wise) matrices of different dimensions!");
         Matrix res = new Matrix(this.rows, this.cols);
         for (int i = 0; i < res.rows; i++) {
