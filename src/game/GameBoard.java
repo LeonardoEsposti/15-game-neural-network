@@ -16,10 +16,7 @@ public class GameBoard implements Moves {
         this.board[this.coords] = 0;
     }
 
-    public GameBoard(GameBoard gb) {
-        this.board = gb.board;
-        this.coords = gb.coords;
-    }
+
 
     public GameBoard(int[] board) {
         this.board = board;
@@ -138,12 +135,21 @@ public class GameBoard implements Moves {
         }
         return true;
     }
+    public GameBoard copy(){
+        GameBoard copy = new GameBoard();
+        for (int i = 0 ; i < 16; i++){
+            copy.board[i] = board[i];
+        }
+        copy.coords = this.coords;
+        return copy;
+
+    }
 
     public Queue children() {
         Queue children = new Queue();
         for (int m : this.legalMoves()) {
             if (m != 0) {
-                GameBoard child = new GameBoard(this);
+                GameBoard child = this.copy();
                 child.move(m);
                 children.add(child, m);
             }
@@ -155,7 +161,7 @@ public class GameBoard implements Moves {
         Queue children = new Queue();
         for (int m : this.legalMoves()) {
             if (m != 0 && m != exception) {
-                GameBoard child = new GameBoard(this);
+                GameBoard child = this.copy();
                 child.move(m);
                 children.add(child, m);
             }
