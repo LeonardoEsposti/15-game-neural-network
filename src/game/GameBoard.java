@@ -36,10 +36,6 @@ public class GameBoard implements Moves {
         this.scrambleBoard(scramble);
     }
 
-    public int[] getBoard() {
-        return this.board;
-    }
-
     public boolean isSolved() {
         for (int i = 0; i < 15; i++) {
             if (this.board[i] != i + 1)
@@ -271,9 +267,5 @@ public class GameBoard implements Moves {
 
     public int heuristic() {
         return manhattan() + linearConflicts();
-    }
-
-    static void main() {
-        new GameBoard(100).printBoard();
     }
 }
