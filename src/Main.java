@@ -1,5 +1,6 @@
 import exceptions.EmptyQueueException;
 import game.GameBoard;
+import game.IDAClass;
 import game.Solver;
 import neuralNetwork.NeuralNetwork;
 import training.Trainer;
@@ -12,14 +13,15 @@ public class Main {
                 9, 10, 7, 12,
                 13, 15, 14, 0
         };
-        /* IDAClass solver = new IDAClass();
-        while(true) {
+        IDAClass solver = new IDAClass();
+        for (int i= 0; i<2_000_000; i++) {
             GameBoard gameBoard = new GameBoard(170);
             solver.ida(gameBoard);
-        } */
+        }
+        /*
         NeuralNetwork nn= new NeuralNetwork();
         Trainer.trainFromDataset("./src/training/dataset.csv", nn);
         Solver solver = new Solver(nn);
-        solver.solve(new GameBoard(new int[]{2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6}));
+        solver.solve(new GameBoard(new int[]{2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6}));*/
     }
 }
