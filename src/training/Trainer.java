@@ -1,12 +1,16 @@
 package training;
 
 import dataStructures.Matrix;
-import game.GameBoard;
 import neuralNetwork.Layer;
 import neuralNetwork.NeuralNetwork;
+import game.GameBoard;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Trainer {
 
@@ -14,55 +18,63 @@ public class Trainer {
 
     public static void trainFromDataset(String filepath, NeuralNetwork nn) {
 
-        System.out.println("Starting AI Training...");
+        System.out.println("Loading dataset into memory...");
+        List<String> dataset = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
-            int rowCount = 0;
-
             while ((line = reader.readLine()) != null) {
-
-                String[] element = line.split(",");
-
-                int[] boardArray = new int[16];
-                for (int i = 0; i < 16; i++) {
-                    boardArray[i] = Integer.parseInt(element[i]);
-                }
-                GameBoard gb = new GameBoard(boardArray);
-                Matrix input = new Matrix(gb);
-
-                double correctDistance = Double.parseDouble(element[16]);
-                Matrix target = new Matrix(1, 1);
-                target.setEntry(0, 0, correctDistance);
-
-                nn.train(input, target);
-                rowCount++;
-
-                if (rowCount % 1000 == 0) {
-                    try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/saved_params.csv", false))) {
-                        for (Layer layer : nn.layers) {
-
-                            writer.write(layer.biasesToString());
-                            writer.newLine();
-                            writer.write(layer.weigthsToString());
-                            writer.newLine();
-
-                            System.out.println("Bias and weights for layer " + layer.getN() + " saved.");
-                        }
-
-                    } catch (java.io.IOException e) {
-                        System.out.println("Error while saving the weights and biases data.");
-                    }
-                    System.out.println("Trained on " + rowCount + " boards...");
-                    System.out.println("Prediction for board 2,11,8,13,5,12,4,15,0,7,1,10,14,9,3,6 is (target=50): " + nn.predict(testing).getFirstEntry());
-                }
+                dataset.add(line);
             }
-
-            System.out.println("Training Complete! Total boards processed: " + rowCount);
-
         } catch (IOException e) {
             System.out.println("Could not find or read the file: " + filepath);
+            return;
         }
+
+        System.out.println("Shuffling " + dataset.size() + " boards...");
+        Collections.shuffle(dataset); //shuffles the dataset so the neural network can learn better
+
+        System.out.println("Starting AI Training ...");
+        int rowCount = 0;
+
+        for (String line : dataset) {
+            String[] element = line.split(",");
+
+            int[] boardArray = new int[16];
+            for (int i = 0; i < 16; i++) {
+                boardArray[i] = Integer.parseInt(element[i]);
+            }
+
+            Matrix input = new Matrix(new GameBoard(boardArray)); //one hot encode the board in to a vector
+
+            double correctDistance = Double.parseDouble(element[16]);
+            Matrix target = new Matrix(1, 1);
+            target.setEntry(0, 0, correctDistance);
+
+            nn.train(input, target);
+            rowCount++;
+
+            if (rowCount % 1000 == 0) {
+                saveWeights(nn);
+                System.out.println("Trained on " + rowCount + " boards...");
+                System.out.println("Prediction for test board (target=50): " + nn.predict(testing).getFirstEntry());
+            }
+        }
+
+        System.out.println("Training Complete! Total boards processed: " + rowCount);
     }
 
+    // Helper method to keep your main loop clean
+    private static void saveWeights(NeuralNetwork nn) {
+        try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/saved_params.csv", false))) {
+            for (Layer layer : nn.layers) {
+                writer.write(layer.biasesToString());
+                writer.newLine();
+                writer.write(layer.weigthsToString());
+                writer.newLine();
+            }
+        } catch (java.io.IOException e) {
+            System.out.println("Error while saving the weights and biases data.");
+        }
+    }
 }
