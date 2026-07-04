@@ -10,7 +10,7 @@ public class NeuralNetwork implements Helpers {
 
     public final ArrayList<Layer> layers;
 
-    private final boolean INITIALIZATION = false;
+    private final boolean INITIALIZATION = true;
     private final String filepath = "src/training/saved_params.csv";
 
     public NeuralNetwork() {

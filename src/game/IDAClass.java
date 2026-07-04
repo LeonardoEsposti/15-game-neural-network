@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public class IDAClass {
 
-    private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(20);
+    private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(24);
     private static final HashSet<String> alreadySaved = new java.util.HashSet<>();  // avoids repetitions
 
     public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
