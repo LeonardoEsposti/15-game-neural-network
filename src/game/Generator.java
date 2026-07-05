@@ -5,17 +5,21 @@ import exceptions.EmptyQueueException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class IDAClass {
+public class Generator implements ReverseScramble {
 
     private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(24);
     private static final HashSet<String> alreadySaved = new java.util.HashSet<>();  // avoids repetitions
 
-    public int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
+    // checks the expected future of a board
+    private int f(GameBoard board, int g, int bound, ArrayList<GameBoard> path) throws EmptyQueueException {
         int f = g + board.heuristic();
         if (f > bound)
             return f;
-        if (data.containsKey(board))
+        if (this.data.containsKey(board))
             return -1;
         int min = Integer.MAX_VALUE;
         Queue children = board.children();
@@ -34,12 +38,6 @@ public class IDAClass {
         return min;
     }
 
-    // basically, it checks its own expected future:
-    // - if it's over the bound, returns it, if it finds the path, returns -1;
-    // - if its expected future is fine, it checks that of its children:
-    //      - if any of them get it solved, it returns -1;
-    //      - otherwise it returns the expectancy of the best child;
-
     public void ida(GameBoard board) throws EmptyQueueException {
         int t;
         int bound = board.heuristic();
@@ -52,12 +50,12 @@ public class IDAClass {
                 continue;
             }
             GameBoard current = path.getLast();
-            int distance = data.get(current);
+            int distance = this.data.get(current);
             while (distance > 0) {
                 Queue children = current.children();
                 while (children.isNotEmpty()) {
                     GameBoard child = children.get();
-                    if (data.containsKey(child) && data.get(child) == distance - 1) {
+                    if (this.data.containsKey(child) && this.data.get(child) == distance - 1) {
                         path.add(child);
                         current = child;
                         distance--;
@@ -65,26 +63,27 @@ public class IDAClass {
                     }
                 }
             }
-
-            // saving on a file
-            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/end_game_dataset.csv", true))) {
-                distance = path.size() - 1;
-                for (int i = 0; i < path.size(); i++) {
-                    GameBoard b = path.get(i);
-                    String boardHash = b.toString();
-                    if (!alreadySaved.contains(boardHash)) {
-                        int trueDistance = distance - i;
-                        writer.write(b.toString() + trueDistance);
-                        writer.newLine();
-                        alreadySaved.add(boardHash);
-                    }
-                }
-                System.out.println("Path solved and board written in the dataset.");
-
-            } catch (java.io.IOException e) {
-                System.out.println("Error while saving the training data.");
-            }
+            this.save(path);
             break;
+        }
+    }
+
+    private void save(ArrayList<GameBoard> path) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/training/end_game_dataset.csv", true))) {
+            int distance = path.size() - 1;
+            for (int i = 0; i < path.size(); i++) {
+                GameBoard b = path.get(i);
+                String boardHash = b.toString();
+                if (!alreadySaved.contains(boardHash)) {
+                    int trueDistance = distance - i;
+                    writer.write(b.toString() + trueDistance);
+                    writer.newLine();
+                    alreadySaved.add(boardHash);
+                }
+            }
+            System.out.println("Path solved and board written in the dataset.");
+        } catch (IOException e) {
+            System.out.println("Error while saving the training data.");
         }
     }
 }

@@ -4,7 +4,7 @@ import dataStructures.Queue;
 import exceptions.EmptyQueueException;
 import java.util.HashMap;
 
-class ReverseScramble {
+interface ReverseScramble {
 
     static HashMap<GameBoard, Integer> calculate(int ceiling) {
         HashMap<GameBoard, Integer> distances = new HashMap<>();

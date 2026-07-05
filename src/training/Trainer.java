@@ -4,13 +4,11 @@ import dataStructures.Matrix;
 import neuralNetwork.Layer;
 import neuralNetwork.NeuralNetwork;
 import game.GameBoard;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Trainer {
 
@@ -19,7 +17,7 @@ public class Trainer {
     public static void trainFromDataset(String filepath, NeuralNetwork nn) {
 
         System.out.println("Loading dataset into memory...");
-        List<String> dataset = new ArrayList<>();
+        ArrayList<String> dataset = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;

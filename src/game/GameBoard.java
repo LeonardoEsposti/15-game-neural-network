@@ -11,12 +11,10 @@ public class GameBoard implements Moves {
 
     public GameBoard() {
         for (int i = 1; i < 16; i++) {
-            this.board[i - 1] = i;
+            this.board[i-1] = i;
         }
         this.board[this.coords] = 0;
     }
-
-
 
     public GameBoard(int[] board) {
         this.board = board;
@@ -135,14 +133,14 @@ public class GameBoard implements Moves {
         }
         return true;
     }
-    public GameBoard copy(){
+
+    public GameBoard copy() {
         GameBoard copy = new GameBoard();
-        for (int i = 0 ; i < 16; i++){
-            copy.board[i] = board[i];
+        for (int i = 0; i < 16; i++) {
+            copy.board[i] = this.board[i];
         }
         copy.coords = this.coords;
         return copy;
-
     }
 
     public Queue children() {
