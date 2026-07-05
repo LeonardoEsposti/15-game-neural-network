@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Trainer {
 
-    private static final Matrix testing = new Matrix(new GameBoard(new int[]{2, 11, 8, 13, 5, 12, 4, 15, 0, 7, 1, 10, 14, 9, 3, 6}));
+    private static final Matrix testing = new Matrix(new GameBoard(new int[]{1,6,2,4,5,0,10,8,9,7,3,12,13,14,11,15}));
 
     public static void trainFromDataset(String filepath, NeuralNetwork nn) {
 

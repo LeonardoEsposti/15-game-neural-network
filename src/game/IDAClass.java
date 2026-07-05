@@ -67,7 +67,7 @@ public class IDAClass {
             }
 
             // saving on a file
-            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/dataset.csv", true))) {
+            try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/end_game_dataset.csv", true))) {
                 distance = path.size() - 1;
                 for (int i = 0; i < path.size(); i++) {
                     GameBoard b = path.get(i);
