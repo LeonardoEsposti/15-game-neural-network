@@ -31,7 +31,7 @@ public class NeuralNetwork implements Helpers {
     }
 
     public void train(Matrix input, Matrix target) {
-        final double learningRate = 0.00001;
+        final double learningRate = 0.000_001; // 0.000 001 for endgame training
         Matrix prediction = this.predict(input);
         Matrix error = prediction.subtract(target);
         for (int i = this.layers.size() - 1; i >= 0; i--) {
