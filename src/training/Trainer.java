@@ -62,7 +62,6 @@ public class Trainer {
         System.out.println("Training Complete! Total boards processed: " + rowCount);
     }
 
-    // Helper method to keep your main loop clean
     private static void saveWeights(NeuralNetwork nn) {
         try (java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter("src/training/saved_params.csv", false))) {
             for (Layer layer : nn.layers) {
