@@ -1,3 +1,4 @@
+import dataStructures.Matrix;
 import exceptions.EmptyQueueException;
 import game.GameBoard;
 import game.Generator;
@@ -23,12 +24,12 @@ public class Main {
         } */
 
         // TRAINING NEURAL NETWORK ON DATASET
-        NeuralNetwork nn= new NeuralNetwork();
-        // Trainer.trainFromDataset("src/training/end_game_dataset.csv", nn);
+        NeuralNetwork nn = new NeuralNetwork();
+        // Trainer.trainFromDataset("src/training/dataset.csv", nn);
         // System.out.println(nn.predict(new Matrix(new GameBoard(new int[]{1,2,3,4,5,6,7,8,9,10,0,11,13,14,15,12}))).getFirstEntry());
 
         // TESTING NEURAL NETWORK ON NEW GAMEBOARDS
-        Solver solver = new Solver(nn);
-        solver.solve(new GameBoard(new int[]{1,9,0,4,7,2,6,3,13,15,8,10,11,14,5,12}));
+        // Solver solver = new Solver(nn);
+        // solver.solve(new GameBoard(new int[]{1,9,0,4,7,2,6,3,13,15,8,10,11,14,5,12}));
     }
 }

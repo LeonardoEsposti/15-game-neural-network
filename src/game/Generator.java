@@ -69,7 +69,7 @@ public class Generator implements ReverseScramble {
     }
 
     private void save(ArrayList<GameBoard> path) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/training/end_game_dataset.csv", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/training/dataset.csv", true))) {
             int distance = path.size() - 1;
             for (int i = 0; i < path.size(); i++) {
                 GameBoard b = path.get(i);
