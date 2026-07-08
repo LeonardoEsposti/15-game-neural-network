@@ -10,7 +10,7 @@ public class NeuralNetwork implements Helpers {
 
     public final ArrayList<Layer> layers;
 
-    private final boolean INITIALIZATION = true;
+    private final boolean INITIALIZATION = false;
     private final String filepath = "src/training/saved_params.csv";
 
     public NeuralNetwork() {
@@ -33,7 +33,7 @@ public class NeuralNetwork implements Helpers {
     }
 
     public void train(Matrix input, Matrix target) {
-        final double learningRate = 0.00001;
+        final double learningRate = 0.0001;
         Matrix prediction = this.predict(input);
         Matrix error = prediction.subtract(target);
         for (int i = this.layers.size() - 1; i >= 0; i--) {
