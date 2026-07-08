@@ -30,6 +30,6 @@ public class Main {
 
         // TESTING NEURAL NETWORK ON NEW GAMEBOARDS
         Solver solver = new Solver(nn);
-        solver.solve(new GameBoard(new int[]{5,4,1,6,2,8,10,0,15,3,13,12,11,14,7,9}));
+        solver.solve(new GameBoard(50));
     }
 }
