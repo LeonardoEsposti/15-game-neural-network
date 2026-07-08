@@ -13,6 +13,10 @@ public class Solver {
     }
 
     public void solve(GameBoard board) throws EmptyQueueException {
+        if (!board.isSolvable()) {
+            System.out.println("The given board is impossible to solve!");
+            return;
+        }
         Queue children;
         GameBoard parentBoard = board;
         int moveToNotInclude = 0;
@@ -34,14 +38,18 @@ public class Solver {
                     smallestBoard = child;
                 }
             }
-            System.out.println("Next move is " + getMove(smallestMove) + " with a prediction of: " + minPrediction);
+            System.out.println();
+            System.out.println("Next move is " + getMove(smallestMove) + " (" + (int) minPrediction + " moves left)");
+            System.out.println();
             moveToNotInclude = (smallestMove + 1) % 4 + 1;
             smallestBoard.printBoard();
             parentBoard = smallestBoard;
         }
+        System.out.println("The board is solved:");
+        parentBoard.printBoard();
     }
 
-    public static String getMove(int move) {
+    private static String getMove(int move) {
         return switch (move) {
             case 1 -> "UP";
             case 2 -> "RIGHT";

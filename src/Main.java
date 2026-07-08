@@ -10,10 +10,10 @@ public class Main {
     public static void main(String[] args) throws EmptyQueueException {
 
         int[] testBoard = {
-                4, 3, 2, 1,
-                5, 6, 11, 8,
-                9, 10, 7, 12,
-                13, 15, 14, 0
+                1, 2, 3, 4,
+                5, 6, 7, 8,
+                9, 10, 11, 12,
+                13, 14, 15, 0
         };
 
         // GENERATING DATASET
@@ -30,6 +30,6 @@ public class Main {
 
         // TESTING NEURAL NETWORK ON NEW GAMEBOARDS
         Solver solver = new Solver(nn);
-        solver.solve(new GameBoard(new int[]{1,9,0,4,7,2,6,3,13,15,8,10,11,14,5,12}));
+        solver.solve(new GameBoard(new int[]{5,4,1,6,2,8,10,0,15,3,13,12,11,14,7,9}));
     }
 }

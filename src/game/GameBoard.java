@@ -39,6 +39,20 @@ public class GameBoard implements Moves {
         return true;
     }
 
+    public boolean isSolvable() {
+        int inversions = 0;
+        int rowFromBottom = 4 - (this.coords / 4);
+        for (int i = 0; i < 15; i++) {
+            if (this.board[i] == 0) continue;
+            for (int j = i+1; j < 16; j++) {
+                if (this.board[j] == 0) continue;
+                if (this.board[i] > this.board[j])
+                    inversions++;
+            }
+        }
+        return (inversions + rowFromBottom) % 2 != 0;
+    }
+
     private void scrambleBoard(int scramble) {
         int dontMove = 0;
         while (scramble > 0) {
