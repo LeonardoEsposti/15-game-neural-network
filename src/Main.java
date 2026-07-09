@@ -1,9 +1,6 @@
-import dataStructures.Matrix;
 import exceptions.EmptyQueueException;
 import game.GameBoard;
-import game.Generator;
-import game.Solver;
-import training.Trainer;
+import game.IDA_Solver;
 import neuralNetwork.NeuralNetwork;
 
 public class Main {
@@ -16,20 +13,20 @@ public class Main {
                 13, 14, 15, 0
         };
 
-        // GENERATING DATASET
-        /* Generator generator = new Generator();
-        for (int i = 0; i < 100000; i++) {
-            GameBoard gameBoard = new GameBoard(10);
-            generator.ida(gameBoard);
-        } */
-
         // TRAINING NEURAL NETWORK ON DATASET
-        NeuralNetwork nn = new NeuralNetwork();
+        //NeuralNetwork nn = new NeuralNetwork();
         //Trainer.trainFromDataset("src/training/dataset.csv", nn);
         //System.out.println(nn.predict(new Matrix(new GameBoard(new int[]{1,2,3,4,5,6,7,8,9,10,0,11,13,14,15,12}))).getFirstEntry());
 
-        // TESTING NEURAL NETWORK ON NEW GAMEBOARDS
-        Solver solver = new Solver(nn);
-        solver.solve(new GameBoard(50));
+        GameBoard board= new GameBoard(new int[]{1,6,2,10,5,0,4,3,9,13,7,8,12,14,15,11});
+        NeuralNetwork nn= new NeuralNetwork();
+        IDA_Solver solverNN= new IDA_Solver(nn);
+        IDA_Solver solverIDA= new IDA_Solver();
+        solverIDA.ida(board);
+        solverNN.ida(board);
+
+
+
     }
+
 }
