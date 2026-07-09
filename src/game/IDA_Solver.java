@@ -70,13 +70,17 @@ public class IDA_Solver implements ReverseScramble {
     public void ida(GameBoard board) throws EmptyQueueException {
         double t;
         double bound;
-
+        if (!saveOnFile){
+            System.out.print("Solving Board with ");
+        }
         if (withNeuralNetwork) {
+            System.out.println("Neural Network...");
             nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
             bound = nnCache.get(board);
-        } else
+        } else {
+            System.out.println("IDA algorithm...");
             bound = board.heuristic();
-
+        }
         ArrayList<GameBoard> path;
         while (true) {
             path = new ArrayList<>();
@@ -119,7 +123,6 @@ public class IDA_Solver implements ReverseScramble {
     }
 
     private void printPath(ArrayList<GameBoard> path) {
-        StringBuilder correctPath = new StringBuilder();
         GameBoard b = null;
         GameBoard next = null;
         for (int i = 0; i < path.size() - 1; i++) {
@@ -127,10 +130,10 @@ public class IDA_Solver implements ReverseScramble {
             b.printBoard();
             next = path.get(i + 1);
             switch (b.getCoords() - next.getCoords()) {
-                case -1 -> System.out.println("RIGHT");//correctPath.append("RIGHT ->, ");
-                case 1 -> System.out.println("LEFT");//correctPath.append("LEFT <-, ");
-                case -4 -> System.out.println("DOWN");//correctPath.append("DOWN v, ");
-                case 4 -> System.out.println("UP");//correctPath.append("UP ^,");
+                case -1 -> System.out.println("RIGHT ->");
+                case 1 -> System.out.println("LEFT <-");
+                case -4 -> System.out.println("DOWN v");
+                case 4 -> System.out.println("UP ^");
                 default -> {
                     System.out.println("Error in printing the path");
                 }
@@ -138,9 +141,9 @@ public class IDA_Solver implements ReverseScramble {
         }
         //confirmation
         if (next.isSolved()) {
-            correctPath.append("--WIN-- IN ONLY " + (path.size() - 1));
+            next.printBoard();
+            System.out.println("\n--WIN-- IN ONLY " + (path.size() - 1));
         }
-        System.out.println(correctPath);
     }
 
     private void save(ArrayList<GameBoard> path) {
