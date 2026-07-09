@@ -11,16 +11,14 @@ public class NeuralNetwork implements Helpers {
     public final ArrayList<Layer> layers;
 
     private final boolean INITIALIZATION = false;
-    private final String filepath = "src/training/saved_params.csv";
+    private final String filepath = "src/training/saved_params_4layers.csv";
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
         if (INITIALIZATION) {
             this.layers.add(new HiddenLayer(256, 512));
-            this.layers.add(new HiddenLayer(512, 1024));
-            this.layers.add(new HiddenLayer(1024, 2048));
-            this.layers.add(new HiddenLayer(2048, 512));
-            this.layers.add(new HiddenLayer(512, 128));
+            this.layers.add(new HiddenLayer(512, 256));
+            this.layers.add(new HiddenLayer(256, 128));
             this.layers.add(new OutputLayer(128, 1));
         } else this.loadInfo();
     }
@@ -67,7 +65,7 @@ public class NeuralNetwork implements Helpers {
                     if (k == 0) savedBiases = new Matrix(newMatrix);
                     else savedWeights = new Matrix(newMatrix);
                 }
-                if (numHiddenLayers < 5) {
+                if (numHiddenLayers < 3) {
                     this.layers.add(new HiddenLayer(cols, rows, savedWeights, savedBiases));
                     numHiddenLayers++;
                 } else {
