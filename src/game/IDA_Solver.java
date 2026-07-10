@@ -41,7 +41,7 @@ public class IDA_Solver implements ReverseScramble {
         if (this.withNeuralNetwork) {
             if (!nnCache.containsKey(board))
                 nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
-            h =  nnCache.get(board);
+            h = nnCache.get(board);
         } else {
             if (this.data.containsKey(board)) h = this.data.get(board);
             else h = board.heuristic();
