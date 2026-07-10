@@ -31,6 +31,10 @@ public class GameBoard implements Moves {
         this.scrambleBoard(scramble);
     }
 
+    public int getCoords(){
+        return this.coords;
+    }
+
     public boolean isSolved() {
         for (int i = 0; i < 15; i++) {
             if (this.board[i] != i + 1)
@@ -44,7 +48,7 @@ public class GameBoard implements Moves {
         int rowFromBottom = 4 - (this.coords / 4);
         for (int i = 0; i < 15; i++) {
             if (this.board[i] == 0) continue;
-            for (int j = i+1; j < 16; j++) {
+            for (int j = i + 1; j < 16; j++) {
                 if (this.board[j] == 0) continue;
                 if (this.board[i] > this.board[j])
                     inversions++;
@@ -76,8 +80,7 @@ public class GameBoard implements Moves {
             case 2 -> move(isRightLegal(coords), 1);
             case 3 -> move(isDownLegal(coords), 4);
             case 4 -> move(isLeftLegal(coords), -1);
-            default -> {
-            }
+            default -> {}
         }
     }
 
@@ -170,15 +173,15 @@ public class GameBoard implements Moves {
     }
 
     private boolean isRowConflict(int x1, int x2, int row) {
-        return (board[x1 + 4 * row] != 0) && board[x2 + 4 * row] != 0
-                && (board[x1 + 4 * row] - 1) / 4 == row && (board[x2 + 4 * row] - 1) / 4 == row  // if in the correct row
-                && board[x1 + 4 * row] > board[x2 + 4 * row];  // if the left one is bigger
+        return (board[x1+row*4] != 0) && board[x2+row*4] != 0
+                && (board[x1+row*4] - 1) / 4 == row && (board[x2+row*4] - 1) / 4 == row  // if in the correct row
+                && board[x1+row*4] > board[x2+row*4];  // if the left one is bigger
     }
 
     private boolean isColConflict(int y1, int y2, int column) {
-        return (board[column + 4 * y1] != 0) && board[column + 4 * y2] != 0
-                && (board[column + 4 * y1] - 1) % 4 == column && (board[column + 4 * y2] - 1) % 4 == column  // if in the correct column
-                && board[column + 4 * y1] > board[column + 4 * y2];  // if the top one is bigger
+        return (board[column+y1*4] != 0) && board[column+y2*4] != 0
+                && (board[column+y1*4] - 1) % 4 == column && (board[column+y2*4] - 1) % 4 == column  // if in the correct column
+                && board[column+y1*4] > board[column+y2*4];  // if the top one is bigger
     }
 
     private int linearConflictsRows() {
@@ -261,18 +264,16 @@ public class GameBoard implements Moves {
         int count = 0;
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 4; c++) {
-                if (board[c + r * 4] == 0)
+                if (board[c+r*4] == 0)
                     continue;
-                int actualRow = (board[c + 4 * r] - 1) / 4;
-                int actualCol = (board[c + 4 * r] - 1) % 4;
+                int actualRow = (board[c+4*r] - 1) / 4;
+                int actualCol = (board[c+4*r] - 1) % 4;
                 count += Math.abs(r - actualRow) + Math.abs(c - actualCol);
             }
         }
         return count;
     }
-    public int getCoords(){
-        return this.coords;
-    }
+
     public int heuristic() {
         return manhattan() + linearConflicts();
     }

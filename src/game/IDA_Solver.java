@@ -4,7 +4,6 @@ import dataStructures.Matrix;
 import dataStructures.Queue;
 import exceptions.EmptyQueueException;
 import neuralNetwork.NeuralNetwork;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,11 +12,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class IDA_Solver implements ReverseScramble {
+
     private final boolean withNeuralNetwork;
     private boolean saveOnFile;
     private NeuralNetwork nn = null;
     private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(15);
     private static final HashSet<String> alreadySaved = new HashSet<>();  // avoids repetitions
+    private final HashMap<GameBoard, Double> nnCache = new HashMap<>();  // to take work off the cpu during nn solving
 
     public IDA_Solver() {
         this.withNeuralNetwork = false;
@@ -33,47 +34,45 @@ public class IDA_Solver implements ReverseScramble {
         this.nn = nn;
     }
 
-    private final HashMap<GameBoard, Double> nnCache = new HashMap<>(); //to take work off the cpu during nn solving
-
     // checks the expected future of a board
     private double f(GameBoard board, int g, double bound, ArrayList<GameBoard> path) throws EmptyQueueException {
 
         double f = g;
-        if (withNeuralNetwork) {
+
+        if (this.withNeuralNetwork) {
             if (!nnCache.containsKey(board))
                 nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
             f += nnCache.get(board);
-        } else
-            f += board.heuristic();
+        } else f += board.heuristic();
 
-        if (f > bound)
-            return f;
-        if ((this.data.containsKey(board) && !withNeuralNetwork) || board.isSolved())
-            return -1;
+        if (f > bound) return f;
+        if ((this.data.containsKey(board) && !withNeuralNetwork) || board.isSolved()) return -1;
+
         double min = Double.MAX_VALUE;
         Queue children = board.children();
         while (children.isNotEmpty()) {
             GameBoard child = children.get();
-            if (path.contains(child))
-                continue;
+            if (path.contains(child)) continue;
             path.add(child);
             double t = f(child, g + 1, bound, path);
-            if (t == -1)
-                return -1;
-            if (t < min)
-                min = t;
+            if (t == -1) return -1;
+            if (t < min) min = t;
             path.removeLast();
         }
         return min;
     }
 
-    public void ida(GameBoard board) throws EmptyQueueException {
-        double t;
-        double bound;
-        if (!saveOnFile){
-            System.out.print("Solving Board with ");
+    public void ida(GameBoard board) throws EmptyQueueException
+    {
+        if (!board.isSolvable()) {
+            System.out.println("Board is not mathematically solvable!");
+            return;
         }
-        if (withNeuralNetwork) {
+
+        double t, bound;
+        if (!this.saveOnFile)
+            System.out.print("Solving Board with ");
+        if (this.withNeuralNetwork) {
             System.out.println("Neural Network...");
             nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
             bound = nnCache.get(board);
@@ -81,6 +80,7 @@ public class IDA_Solver implements ReverseScramble {
             System.out.println("IDA algorithm...");
             bound = board.heuristic();
         }
+
         ArrayList<GameBoard> path;
         while (true) {
             path = new ArrayList<>();
@@ -93,14 +93,13 @@ public class IDA_Solver implements ReverseScramble {
             break;
         }
 
-
-        if (withNeuralNetwork) {
+        if (this.withNeuralNetwork) {
             this.printPath(path);
             nnCache.clear();
             return;
         }
 
-        //reconstructing the whole path
+        // reconstructing the whole path
         GameBoard current = path.getLast();
         int distance = this.data.get(current);
         while (distance > 0) {
@@ -115,7 +114,8 @@ public class IDA_Solver implements ReverseScramble {
                 }
             }
         }
-        if (saveOnFile)
+
+        if (this.saveOnFile)
             this.save(path);
         else
             this.printPath(path);
@@ -129,20 +129,20 @@ public class IDA_Solver implements ReverseScramble {
             b = path.get(i);
             b.printBoard();
             next = path.get(i + 1);
+            System.out.println();
             switch (b.getCoords() - next.getCoords()) {
-                case -1 -> System.out.println("RIGHT ->");
-                case 1 -> System.out.println("LEFT <-");
-                case -4 -> System.out.println("DOWN v");
-                case 4 -> System.out.println("UP ^");
-                default -> {
-                    System.out.println("Error in printing the path");
-                }
+                case -1 -> System.out.println("RIGHT (>)");
+                case 1 -> System.out.println("LEFT (<)");
+                case -4 -> System.out.println("DOWN (v)");
+                case 4 -> System.out.println("UP (^)");
+                default -> System.out.println("Error while printing the path.");
             }
         }
-        //confirmation
+
+        // confirmation
         if (next.isSolved()) {
             next.printBoard();
-            System.out.println("\n--WIN-- IN ONLY " + (path.size() - 1));
+            System.out.println("\n--WIN-- IN ONLY " + (path.size() - 1) + " MOVES");
         }
     }
 
@@ -164,5 +164,4 @@ public class IDA_Solver implements ReverseScramble {
             System.out.println("Error while saving the training data.");
         }
     }
-
 }

@@ -6,10 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class NeuralNetwork implements Helpers {
+public class NeuralNetwork implements Activations {
 
     public final ArrayList<Layer> layers;
-
     private final boolean INITIALIZATION = false;
     private final String filepath = "src/training/saved_params_4layers.csv";
 
@@ -40,7 +39,7 @@ public class NeuralNetwork implements Helpers {
         }
     }
 
-    // saved weights format: rows, cols, entry1,entry2,....,entry(rxc)
+    // saved weights format: rows, cols, entry(1x1),entry(1x2),....,entry(rxc)
     // saved biases format: rows, 0, entry1,entry2,......,entryR
     private void loadInfo() {
         int cols = 0, rows = 0, numHiddenLayers = 0;
@@ -49,10 +48,12 @@ public class NeuralNetwork implements Helpers {
             String line;
             while ((line = reader.readLine()) != null) {
                 for (int k = 0; k < 2; k++) {
-                    if (k == 1) line = reader.readLine();
-                    String[] element = line.split(",");
 
+                    if (k == 1) line = reader.readLine();
+
+                    String[] element = line.split(",");
                     rows = Integer.parseInt(element[0]);
+
                     if (k == 0) cols = 1;
                     else cols = Integer.parseInt(element[1]);
 
@@ -62,9 +63,11 @@ public class NeuralNetwork implements Helpers {
                             newMatrix[i][j] = Double.parseDouble(element[i*cols+j+2]);
                         }
                     }
+
                     if (k == 0) savedBiases = new Matrix(newMatrix);
                     else savedWeights = new Matrix(newMatrix);
                 }
+
                 if (numHiddenLayers < 3) {
                     this.layers.add(new HiddenLayer(cols, rows, savedWeights, savedBiases));
                     numHiddenLayers++;
@@ -78,7 +81,7 @@ public class NeuralNetwork implements Helpers {
         }
     }
 
-    static void main() {
+    public static void main(String[] args) {
 
         // TEST: backward propagation
         NeuralNetwork nn = new NeuralNetwork();

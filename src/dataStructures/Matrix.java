@@ -136,13 +136,14 @@ public class Matrix {
     public void printMatrix() {
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
-                System.out.print(this.entries[i][j] + " ");
+                System.out.print(this.entries[i][j]);
+                System.out.print("\t");
             }
             System.out.println();
         }
     }
 
-    static void main() {
+    public static void main(String[] args) {
 
         double[][] a = {{1, 2}, {3, 4}, {5, 6}};
         Matrix m1 = new Matrix(a); // 3 x 2

@@ -15,6 +15,6 @@ class HiddenLayer extends Layer {
     protected Matrix forwardPass(Matrix input) {
         this.input = input;
         this.computeValues();
-        return Helpers.leakyRelu(this.values);
+        return Activations.leakyRelu(this.values);
     }
 }

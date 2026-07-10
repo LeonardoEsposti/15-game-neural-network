@@ -46,12 +46,8 @@ public class Queue {
             return returnValue;
         }
     }
-    public int readMove(){
-        return first.move;
-    }
+
     public boolean isNotEmpty() {
         return first != null || last != null;
     }
-
 }
-
