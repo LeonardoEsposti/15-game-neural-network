@@ -12,7 +12,7 @@ public class Main {
         //Trainer.trainFromDataset("src/training/dataset.csv", nn);
 
         // --- TESTING PHASE ---
-        GameBoard board = new GameBoard(10);
+        GameBoard board = new GameBoard(new int[]{1,5,2,3,6,0,8,4,9,13,7,12,14,11,10,15});
         NeuralNetwork nn = new NeuralNetwork();
         IDA_Solver solverNN = new IDA_Solver(nn);
         IDA_Solver solverIDA = new IDA_Solver();

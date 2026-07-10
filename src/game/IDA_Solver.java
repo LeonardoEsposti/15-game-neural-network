@@ -36,15 +36,18 @@ public class IDA_Solver implements ReverseScramble {
 
     // checks the expected future of a board
     private double f(GameBoard board, int g, double bound, ArrayList<GameBoard> path) throws EmptyQueueException {
-
-        double f = g;
+        double h;
 
         if (this.withNeuralNetwork) {
             if (!nnCache.containsKey(board))
                 nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
-            f += nnCache.get(board);
-        } else f += board.heuristic();
+            h =  nnCache.get(board);
+        } else {
+            if (this.data.containsKey(board)) h = this.data.get(board);
+            else h = board.heuristic();
+        }
 
+        double f = g + h;
         if (f > bound) return f;
         if ((this.data.containsKey(board) && !withNeuralNetwork) || board.isSolved()) return -1;
 
@@ -78,7 +81,8 @@ public class IDA_Solver implements ReverseScramble {
             bound = nnCache.get(board);
         } else {
             System.out.println("IDA algorithm...");
-            bound = board.heuristic();
+            if (this.data.containsKey(board)) bound = this.data.get(board);
+            else bound = board.heuristic();
         }
 
         ArrayList<GameBoard> path;
