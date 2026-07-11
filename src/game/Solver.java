@@ -82,13 +82,13 @@ public class Solver implements ReverseScramble, Moves {
 
         double t, bound;
         if (!this.saveOnFile && !showComparison)
-            System.out.print("Solving board with IDA algorithm using ");
+            System.out.print("Solving board with IDA* algorithm using ");
         if (this.withNeuralNetwork) {
             System.out.println("neural network prediction...\n");
             nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
             bound = nnCache.get(board);
         } else {
-            if (!showComparison) System.out.println("pure IDA...\n");
+            if (!showComparison) System.out.println("pure IDA*...\n");
             if (this.data.containsKey(board)) bound = this.data.get(board);
             else bound = board.heuristic();
         }
@@ -218,7 +218,7 @@ public class Solver implements ReverseScramble, Moves {
             minBoard.printBoard();
             parent = minBoard;
             if (iterations > IT_LIMIT) {
-                System.out.println("The iteration limit has been reached.");
+                System.out.println("\nThe iteration limit has been reached.\n");
                 return;
             }
         }
@@ -226,9 +226,9 @@ public class Solver implements ReverseScramble, Moves {
 
     public void predictionComparison(GameBoard board) throws EmptyQueueException {
         if (!showComparison) return;
-        System.out.print("-Matematically perfect expected amount of moves (calculated with IDA*) is: ");
+        System.out.print("- Mathematically perfect expected amount of moves (calculated with IDA*) is: ");
         solveWithIDA(board);
-        System.out.println("-The trained Neural Network predicted: " + nn.predict(new Matrix(board)).getFirstEntry());
-        System.out.println("-The NOT trained Neural Network predicted: " + dumbNN.predict(new Matrix(board)).getFirstEntry());
+        System.out.println("- The trained Neural Network predicted: " + nn.predict(new Matrix(board)).getFirstEntry());
+        System.out.println("- The NOT trained Neural Network predicted: " + dumbNN.predict(new Matrix(board)).getFirstEntry());
     }
 }

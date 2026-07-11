@@ -10,7 +10,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         String readLine;
-        NeuralNetwork nn = new NeuralNetwork();
+        NeuralNetwork nn = new NeuralNetwork(false);
         Solver solverNN = new Solver(nn);
 
         // --- TRAINING PHASE ---
@@ -18,39 +18,39 @@ public class Main {
         //Trainer.trainFromDataset("src/training/dataset.csv", nn);
 
         // --- TESTING PHASE ---
-        System.out.println("The new scrambled board is: ");
+        System.out.println("The new scrambled board is: \n");
         GameBoard board = new GameBoard(100);
         board.printBoard();
 
-        System.out.println("Now some tests to show Neural Network Prediction accuracy: ");
-        do {
+        System.out.println("\nNow some tests to show Neural Network Prediction accuracy: ");
+
+        while (true) {
             Solver comparisonSolver = new Solver(nn, true);
             comparisonSolver.predictionComparison(board);
             readLine = sc.nextLine();
+            if (readLine.equals("stop"))
+                break;
             board = new GameBoard(100);
-        } while (!readLine.toString().equals("stop"));
-
+            board.printBoard();
+            System.out.println();
+        }
 
         System.out.println("IDA* solve: ");
         readLine = sc.nextLine();
-        if (!readLine.toString().equals("skip")) {
+        if (!readLine.equals("skip")) {
             Solver solverIDA = new Solver();
             solverIDA.solveWithIDA(board);
         }
 
         System.out.println("Solve attempt with Neural Network only: ");
         readLine = sc.nextLine();
-        if (!readLine.toString().equals("skip")) {
+        if (!readLine.equals("skip"))
             solverNN.solveWithNN(board);
-        }
 
         System.out.println("Solve with IDA* + Neural Network (on an easier board): ");
         GameBoard easyGameBoard = new GameBoard(20);
         readLine = sc.nextLine();
-        if (!readLine.toString().equals("skip")) {
+        if (!readLine.equals("skip"))
             solverNN.solveWithIDA(easyGameBoard);
-        }
-
-
     }
 }

@@ -13,7 +13,7 @@ public class NeuralNetwork implements Activations {
     private boolean INITIALIZATION;
     private final String filepath = "src/training/saved_params.csv";
 
-    public NeuralNetwork() {
+    public NeuralNetwork(boolean INITIALIZATION) {
         this.layers = new ArrayList<>();
         if (INITIALIZATION) {
             this.layers.add(new HiddenLayer(256, 512));
@@ -21,11 +21,6 @@ public class NeuralNetwork implements Activations {
             this.layers.add(new HiddenLayer(256, 128));
             this.layers.add(new OutputLayer(128, 1));
         } else this.loadInfo();
-    }
-
-    public NeuralNetwork(boolean INITIALIZATION) {
-        this.INITIALIZATION = INITIALIZATION;
-        this();
     }
 
     public Matrix predict(Matrix input) {
@@ -90,7 +85,7 @@ public class NeuralNetwork implements Activations {
     public static void main(String[] args) {
 
         // TEST: backward propagation
-        NeuralNetwork nn = new NeuralNetwork();
+        NeuralNetwork nn = new NeuralNetwork(true);
         double[][] in = {{5}, {1}, {2}, {4}, {9}, {7}, {3}, {8}, {13}, {6}, {10}, {12}, {14}, {0}, {11}, {15}};
         Matrix input = new Matrix(in);
         nn.predict(input).printMatrix();
