@@ -11,11 +11,14 @@ public class Main {
         //Trainer.trainFromDataset("src/training/dataset.csv", nn);
 
         // --- TESTING PHASE ---
-        GameBoard board = new GameBoard(40);
+        GameBoard board = new GameBoard(10);
         NeuralNetwork nn = new NeuralNetwork();
-        Solver solverNN = new Solver(nn);
+
         Solver solverIDA = new Solver();
-        solverIDA.solve(board);
-        solverNN.solve(board);
+        //solverIDA.solveWithIDA(board);
+
+        Solver solverNN = new Solver(nn);
+        //solverNN.solveWithIDA(board);
+        solverNN.solveWithNN(board);
     }
 }

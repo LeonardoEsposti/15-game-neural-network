@@ -11,13 +11,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Solver implements ReverseScramble {
+public class Solver implements ReverseScramble, Moves {
 
     private final boolean withNeuralNetwork;
     private boolean saveOnFile = false;
     private NeuralNetwork nn = null;
     private final HashMap<GameBoard, Integer> data = ReverseScramble.calculate(15);
     private static final HashSet<String> alreadySaved = new HashSet<>();  // avoids repetitions
+    private final HashMap<GameBoard, Double> nnCache = new HashMap<>(); // takes work off the cpu during nn predictions
 
     public Solver() {
         this.withNeuralNetwork = false;
@@ -36,12 +37,20 @@ public class Solver implements ReverseScramble {
     // checks the expected future of a board
     private double f(GameBoard board, int g, double bound, ArrayList<GameBoard> path) throws EmptyQueueException {
         double h;
-        if (this.data.containsKey(board)) h = this.data.get(board);
-        else h = board.heuristic();
+
+        if (this.withNeuralNetwork) {
+            if (!nnCache.containsKey(board))
+                nnCache.put(board, this.nn.predict(new Matrix(board)).getFirstEntry());
+            h = nnCache.get(board);
+        }
+        else {
+            if (this.data.containsKey(board)) h = this.data.get(board);
+            else h = board.heuristic();
+        }
 
         double f = g + h;
         if (f > bound) return f;
-        if (this.data.containsKey(board) || board.isSolved()) return -1;
+        if ((this.data.containsKey(board) && !this.withNeuralNetwork) || board.isSolved()) return -1;
 
         double min = Double.MAX_VALUE;
         Queue children = board.children();
@@ -57,11 +66,24 @@ public class Solver implements ReverseScramble {
         return min;
     }
 
-    private void ida(GameBoard board) throws EmptyQueueException {
-        double t, bound;
+    public void solveWithIDA(GameBoard board) throws EmptyQueueException {
+        if (!board.isSolvable()) {
+            System.out.println("Board is not mathematically solvable!");
+            return;
+        }
 
-        if (this.data.containsKey(board)) bound = this.data.get(board);
-        else bound = board.heuristic();
+        double t, bound;
+        if (!this.saveOnFile)
+            System.out.print("Solving board with IDA algorithm using ");
+        if (this.withNeuralNetwork) {
+            System.out.println("neural network prediction...\n");
+            nnCache.put(board, nn.predict(new Matrix(board)).getFirstEntry());
+            bound = nnCache.get(board);
+        } else {
+            System.out.println("pure IDA...\n");
+            if (this.data.containsKey(board)) bound = this.data.get(board);
+            else bound = board.heuristic();
+        }
 
         ArrayList<GameBoard> path;
         while (true) {
@@ -73,6 +95,12 @@ public class Solver implements ReverseScramble {
                 continue;
             }
             break;
+        }
+
+        if (this.withNeuralNetwork) {
+            this.printPath(path);
+            nnCache.clear();
+            return;
         }
 
         // reconstructing the whole path
@@ -110,7 +138,7 @@ public class Solver implements ReverseScramble {
         // confirmation
         if (next.isSolved()) {
             next.printBoard();
-            System.out.println("\n--WIN-- IN ONLY " + (path.size() - 1) + " MOVES");
+            System.out.println("\n--WIN-- IN ONLY " + (path.size() - 1) + " MOVES\n");
         }
     }
 
@@ -133,23 +161,17 @@ public class Solver implements ReverseScramble {
         }
     }
 
-    public void solve(GameBoard board) throws EmptyQueueException {
+    public void solveWithNN(GameBoard board) throws EmptyQueueException {
+        if (this.nn == null) {
+            System.out.println("No neural network provided.");
+            return;
+        }
         if (!board.isSolvable()) {
             System.out.println("Board is not mathematically solvable!");
             return;
         }
-        if (!this.saveOnFile)
-            System.out.print("Solving Board with ");
-        if (this.withNeuralNetwork) {
-            System.out.println("Neural Network...\n");
-            this.solveWithNeuralNetwork(board);
-        } else {
-            System.out.println("IDA algorithm...\n");
-            this.ida(board);
-        }
-    }
-
-    private void solveWithNeuralNetwork(GameBoard board) throws EmptyQueueException {
+        System.out.println("Solving board with neural network...\n");
+        board.printBoard();
         Queue children;
         GameBoard parent = board;
         int moveToExclude = 0;
@@ -170,30 +192,10 @@ public class Solver implements ReverseScramble {
                     minBoard = child;
                 }
             }
-            System.out.println("\nNext move is " + getMove(minMove) + ", with a prediction of " + (int) minPrediction + " moves\n");
+            System.out.println("\nNext move is " + getMove(minMove) + ", with a prediction of " + minPrediction + "\n");
             moveToExclude = (minMove + 1) % 4 + 1;
             minBoard.printBoard();
             parent = minBoard;
         }
-    }
-
-    private static String getMove(int move) {
-        return switch (move) {
-            case 1 -> "UP (^)";
-            case 2 -> "RIGHT (>)";
-            case 3 -> "DOWN (v)";
-            case 4 -> "LEFT (<)";
-            default -> "ERROR";
-        };
-    }
-
-    private static String getMoveByOffset(int offset) {
-        return switch (offset) {
-            case -4 -> "UP (^)";
-            case 1 -> "RIGHT (>)";
-            case 4 -> "DOWN (v)";
-            case -1 -> "LEFT (<)";
-            default -> "ERROR";
-        };
     }
 }
