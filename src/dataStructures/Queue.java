@@ -50,4 +50,8 @@ public class Queue {
     public boolean isNotEmpty() {
         return first != null || last != null;
     }
+
+    public int readMove() {
+        return first.move;
+    }
 }

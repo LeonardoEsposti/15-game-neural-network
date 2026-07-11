@@ -172,6 +172,18 @@ public class GameBoard implements Moves {
         return children;
     }
 
+    public Queue children(int moveToExclude) {
+        Queue children = new Queue();
+        for (int m : this.legalMoves()) {
+            if (m != 0 & m != moveToExclude) {
+                GameBoard child = this.copy();
+                child.move(m);
+                children.add(child, m);
+            }
+        }
+        return children;
+    }
+
     private boolean isRowConflict(int x1, int x2, int row) {
         return (board[x1+row*4] != 0) && board[x2+row*4] != 0
                 && (board[x1+row*4] - 1) / 4 == row && (board[x2+row*4] - 1) / 4 == row  // if in the correct row

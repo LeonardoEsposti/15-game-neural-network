@@ -10,7 +10,7 @@ public class NeuralNetwork implements Activations {
 
     public final ArrayList<Layer> layers;
     private final boolean INITIALIZATION = false;
-    private final String filepath = "src/training/saved_params_4layers.csv";
+    private final String filepath = "src/training/saved_params.csv";
 
     public NeuralNetwork() {
         this.layers = new ArrayList<>();
