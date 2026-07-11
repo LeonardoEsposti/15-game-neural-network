@@ -1,6 +1,7 @@
 package neuralNetwork;
 
 import dataStructures.Matrix;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class NeuralNetwork implements Activations {
 
     public final ArrayList<Layer> layers;
-    private final boolean INITIALIZATION = false;
+    private boolean INITIALIZATION;
     private final String filepath = "src/training/saved_params.csv";
 
     public NeuralNetwork() {
@@ -20,6 +21,11 @@ public class NeuralNetwork implements Activations {
             this.layers.add(new HiddenLayer(256, 128));
             this.layers.add(new OutputLayer(128, 1));
         } else this.loadInfo();
+    }
+
+    public NeuralNetwork(boolean INITIALIZATION) {
+        this.INITIALIZATION = INITIALIZATION;
+        this();
     }
 
     public Matrix predict(Matrix input) {
@@ -60,7 +66,7 @@ public class NeuralNetwork implements Activations {
                     double[][] newMatrix = new double[rows][cols];
                     for (int i = 0; i < rows; i++) {
                         for (int j = 0; j < cols; j++) {
-                            newMatrix[i][j] = Double.parseDouble(element[i*cols+j+2]);
+                            newMatrix[i][j] = Double.parseDouble(element[i * cols + j + 2]);
                         }
                     }
 
